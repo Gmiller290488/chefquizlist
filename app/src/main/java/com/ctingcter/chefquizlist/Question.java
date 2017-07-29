@@ -18,6 +18,18 @@ package com.ctingcter.chefquizlist;
 
         private String mCorrectAnswer;
 
+        private int mImageAnswer1;
+
+        private int mImageAnswer2;
+
+        private int mImageAnswer3;
+
+        private int mImageCorrect;
+
+        private int mImageResourceId = NO_IMAGE_PROVIDED;
+
+        private static final int NO_IMAGE_PROVIDED = -1;
+
         public Question(int id, String question, String Answer1, String Answer2, String Answer3, String correctAnswer) {
             mId = id;
             mQuestion = question;
@@ -26,6 +38,17 @@ package com.ctingcter.chefquizlist;
             mAnswer3 = Answer3;
             mCorrectAnswer = correctAnswer;
         }
+
+    public Question(int id, String question, int imageAnswer1, int imageAnswer2, int imageAnswer3, int imageAnswerCorrect, int imageResourceId ) {
+        mId = id;
+        mQuestion = question;
+        mImageAnswer1 = imageAnswer1;
+        mImageAnswer2 = imageAnswer2;
+        mImageAnswer3 = imageAnswer3;
+        mImageCorrect = imageAnswerCorrect;
+        mImageResourceId = imageResourceId;
+    }
+
         public int getId() {
             return mId;
         }
@@ -46,9 +69,24 @@ package com.ctingcter.chefquizlist;
             return mAnswer3;
         }
 
-        public String getCorrectanswer() {
-            return mCorrectAnswer;
-        }
+    public int getImageAnswer1() {
+        return mImageAnswer1;
+    }
+
+    public int getImageAnswer2() {
+        return mImageAnswer2;
+    }
+
+    public int getImageAnswer3() {
+        return mImageAnswer3;
+    }
+
+    public int getImageCorrect() {
+        return mImageCorrect;
+    }
+    public String getCorrectanswer() {
+        return mCorrectAnswer;
+    }
 
         public void setId(int Id) {
             mId = Id;
@@ -68,6 +106,26 @@ package com.ctingcter.chefquizlist;
 
         public void setAnswer3(String Answer3) {
         mAnswer3 = Answer3;
+    }
+
+        public void setImageAnswer1(int imageAnswer1) {
+            mImageAnswer1 = imageAnswer1;
+        }
+
+    public void setImageAnswer2(int imageAnswer2) {
+        mImageAnswer2 = imageAnswer2;
+    }
+
+    public void setImageAnswer3(int imageAnswer3) {
+        mImageAnswer3 = imageAnswer3;
+    }
+
+    public void setImageAnswerCorrect(int imageAnswerCorrect) {
+        mImageCorrect = imageAnswerCorrect;
+    }
+
+        public boolean hasImage() {
+            return mImageResourceId != NO_IMAGE_PROVIDED;
     }
 
         public void setCorrectAnswer(String correctAnswer) {
