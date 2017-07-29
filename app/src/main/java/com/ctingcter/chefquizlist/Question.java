@@ -23,6 +23,7 @@ package com.ctingcter.chefquizlist;
             mQuestion = question;
             mAnswer1 = Answer1;
             mAnswer2 = Answer2;
+            mAnswer3 = Answer3;
             mCorrectAnswer = correctAnswer;
         }
         public int getId() {
