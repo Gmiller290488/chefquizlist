@@ -13,6 +13,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     int questionsCount;
     Question currentQ;
     ImageView ImageAnswer1, ImageAnswer2, ImageAnswer3;
-    TextView Question_TV, Answer1_TV, Answer2_TV, Answer3_TV;
+    TextView Question_TV, Answer1_TV, Answer2_TV, Answer3_TV, Name_TV;
     RelativeLayout container;
     LinearLayout textQuestion, imageQuestion;
 
@@ -56,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         Answer1_TV = (TextView) findViewById(R.id.Answer1_TV);
         Answer2_TV = (TextView) findViewById(R.id.Answer2_TV);
         Answer3_TV = (TextView) findViewById(R.id.Answer3_TV);
+        Name_TV = (TextView) findViewById(R.id.name_TV);
         container = (RelativeLayout) findViewById(R.id.container);
         imageQuestion = (LinearLayout) findViewById(R.id.imageQuestion);
         textQuestion = (LinearLayout) findViewById(R.id.textQuestion);
@@ -66,6 +69,10 @@ public class MainActivity extends AppCompatActivity {
         ImageAnswer2.setOnClickListener(answerListener);
         ImageAnswer3.setOnClickListener(answerListener);
         setQuestionView();
+
+        Bundle b = getIntent().getExtras();
+        String name = b.getString("name");
+        Name_TV.setText("Hello " + name);
     }
 
     private void setQuestionView() {

@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "766115856851",
+    "firebase_url": "https://chefs-quiz.firebaseio.com",
+    "project_id": "chefs-quiz",
+    "storage_bucket": "chefs-quiz.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:766115856851:android:45b40e21732ada09",
+        "android_client_info": {
+          "package_name": "com.ctingcter.chefquizlist"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "766115856851-lf5ffjismp418h7q0mdfj20dahdoi78m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ctingcter.chefsquizlist",
+            "certificate_hash": "ef0d5036de11a2154249878a2be6f93ea66ed744"
+          }
+        },
+        {
+          "client_id": "766115856851-ldhelfp1tps29bejtunbro3pppkr8lqg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBT0kiFsOocRHxMD9bNJ5PEc4GP9mjxkE0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "766115856851-ldhelfp1tps29bejtunbro3pppkr8lqg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
