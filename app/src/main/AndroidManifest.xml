@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".SignIn" android:configChanges="orientation|screenSize">
+        <activity android:name=".SignInActivity" android:configChanges="orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,7 +21,17 @@
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme"
-            android:parentActivityName=".SignIn" >
+            android:parentActivityName=".SignInActivity" >
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+
+        <activity
+            android:name=".SignUpActivity"
+            android:theme="@style/AppTheme"
+            android:parentActivityName=".SignInActivity" >
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -31,7 +41,7 @@
         <activity
             android:name=".ResultActivity"
             android:theme="@style/AppTheme"
-            android:parentActivityName=".SignIn" >
+            android:parentActivityName=".SignInActivity" >
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

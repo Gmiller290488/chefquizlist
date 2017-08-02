@@ -1,35 +1,35 @@
 {
   "project_info": {
-    "project_number": "766115856851",
-    "firebase_url": "https://chefs-quiz.firebaseio.com",
-    "project_id": "chefs-quiz",
-    "storage_bucket": "chefs-quiz.appspot.com"
+    "project_number": "879210579821",
+    "firebase_url": "https://the-chefs-quiz-11084.firebaseio.com",
+    "project_id": "the-chefs-quiz-11084",
+    "storage_bucket": "the-chefs-quiz-11084.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:766115856851:android:45b40e21732ada09",
+        "mobilesdk_app_id": "1:879210579821:android:ee2e904b1890cba6",
         "android_client_info": {
           "package_name": "com.ctingcter.chefquizlist"
         }
       },
       "oauth_client": [
         {
-          "client_id": "766115856851-lf5ffjismp418h7q0mdfj20dahdoi78m.apps.googleusercontent.com",
+          "client_id": "879210579821-kd5tmvi0tpqp8eoqv3nh4tu1e54o408k.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.ctingcter.chefsquizlist",
+            "package_name": "com.ctingcter.chefquizlist",
             "certificate_hash": "ef0d5036de11a2154249878a2be6f93ea66ed744"
           }
         },
         {
-          "client_id": "766115856851-ldhelfp1tps29bejtunbro3pppkr8lqg.apps.googleusercontent.com",
+          "client_id": "879210579821-hr1o784etfgtmvjijkj7raov7s71l1fi.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBT0kiFsOocRHxMD9bNJ5PEc4GP9mjxkE0"
+          "current_key": "AIzaSyD-8cSWQR4W5MzZXnHpZbQsu86uKz4dgqo"
         }
       ],
       "services": {
@@ -40,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "766115856851-ldhelfp1tps29bejtunbro3pppkr8lqg.apps.googleusercontent.com",
+              "client_id": "879210579821-hr1o784etfgtmvjijkj7raov7s71l1fi.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -18,8 +19,9 @@ import com.google.android.gms.common.api.GoogleApiClient;
  * Created by CTingCTer on 02/08/2017.
  */
 
-public class SignIn extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener{
+public class SignInActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener{
     SignInButton signInButton;
+    TextView signUpLink;
     GoogleApiClient mGoogleApiClient;
     private static final int RC_SIGN_IN = 9001;
 
@@ -37,7 +39,10 @@ public class SignIn extends AppCompatActivity implements GoogleApiClient.OnConne
                 .build();
 
         signInButton = (SignInButton) findViewById(R.id.sign_in_btn);
+        signUpLink = (TextView) findViewById(R.id.signUp_Link);
+
         signInButton.setOnClickListener(this);
+        signUpLink.setOnClickListener(this);
 
     }
 
@@ -46,6 +51,11 @@ public class SignIn extends AppCompatActivity implements GoogleApiClient.OnConne
         switch(v.getId()) {
             case R.id.sign_in_btn:
                 signIn();
+                break;
+            case R.id.signUp_Link:
+                Intent intent = new Intent(SignInActivity.this, SignUpActivity.class);
+                startActivity(intent);
+
         }
     }
 
@@ -67,7 +77,7 @@ public class SignIn extends AppCompatActivity implements GoogleApiClient.OnConne
     private void handleSignInResult(GoogleSignInResult result) {
         if (result.isSuccess()) {
             GoogleSignInAccount acct = result.getSignInAccount();
-            Intent intent = new Intent(SignIn.this, MainActivity.class);
+            Intent intent = new Intent(SignInActivity.this, MainActivity.class);
             Bundle b = new Bundle();
             String name = acct.getDisplayName();
             b.putString("name", name); //Your score

@@ -26,33 +26,21 @@
         android:inputType="textPassword"
         android:hint="@string/password_hint" />
 
+    <EditText
+        android:id="@+id/passwordFieldRepeat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/emailField"
+        android:layout_below="@+id/emailField"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:hint="@string/password_repeat" />
+
     <Button
-        android:id="@+id/LogIn_Button"
+        android:id="@+id/SignUp_Button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/passwordField"
         android:layout_below="@+id/passwordField"
-        android:text="@string/log_in_button_label" />
-
-    <TextView
-        android:id="@+id/signUp_Link"
-        android:layout_gravity="center"
-        android:textColor="@color/colorPrimaryDark"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/sign_up_here"
-        android:linksClickable="true"/>
-
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/sign_in_btn"
-        android:layout_marginTop="16dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center" />
-
-
-
-        />
-
-
+        android:text="@string/sign_up_button_label" />
 </LinearLayout>
