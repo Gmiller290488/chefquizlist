@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:textAllCaps="true"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:background="#ff2"
+        android:id="@+id/all_TV"
+        android:text="All"/>
+    <TextView
+        android:id="@+id/chefs_TV"
+        android:background="#c9c9c9"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:textAllCaps="true"
+        android:text="Chefs"/>
+    <TextView
+        android:id="@+id/foods_TV"
+        android:background="#a22"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:textAllCaps="true"
+        android:layout_weight="1"
+        android:text="Foods"/>
+    <TextView
+        android:id="@+id/nations_TV"
+        android:background="#e66"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:textAllCaps="true"
+        android:text="Nations"/>
+</LinearLayout>

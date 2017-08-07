@@ -33,11 +33,9 @@ public class MainActivity extends AppCompatActivity {
     TextView Question_TV, Answer1_TV, Answer2_TV, Answer3_TV, Name_TV;
     RelativeLayout container;
     LinearLayout textQuestion, imageQuestion;
-    private FirebaseAuth mFirebaseAuth;
-    private FirebaseUser mFirebaseUser;
-    private String mUserEmail;
-    private String mName;
+    FirebaseAuth mFirebaseAuth;
 
+    /* Need to implement a way to check which category was selected and thus which questions to show */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,20 +73,10 @@ public class MainActivity extends AppCompatActivity {
         ImageAnswer1.setOnClickListener(answerListener);
         ImageAnswer2.setOnClickListener(answerListener);
         ImageAnswer3.setOnClickListener(answerListener);
-        
+
         mFirebaseAuth = FirebaseAuth.getInstance();
-        mFirebaseUser = mFirebaseAuth.getCurrentUser();
-        Bundle b = getIntent().getExtras();
-        if (mFirebaseUser == null && b == null) {
-            loadLogInView();
-        } else if (b == null) {
-            mUserEmail = mFirebaseUser.getEmail();
-            Name_TV.setText("Welcome " + mUserEmail);
-        } else {
-            mName = b.getString("name");
-            Name_TV.setText("Welcome " + mName);
-        }
         
+
         setQuestionView();
 
     }
