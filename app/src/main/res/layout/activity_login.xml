@@ -27,7 +27,7 @@
         android:hint="@string/password_hint" />
 
     <Button
-        android:id="@+id/LogIn_Button"
+        android:id="@+id/logIn_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/passwordField"
@@ -44,7 +44,7 @@
         android:linksClickable="true"/>
 
     <com.google.android.gms.common.SignInButton
-        android:id="@+id/sign_in_btn"
+        android:id="@+id/sign_in_google_btn"
         android:layout_marginTop="16dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

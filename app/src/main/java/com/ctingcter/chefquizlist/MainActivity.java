@@ -7,6 +7,8 @@ import android.media.MediaPlayer;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -15,6 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +33,10 @@ public class MainActivity extends AppCompatActivity {
     TextView Question_TV, Answer1_TV, Answer2_TV, Answer3_TV, Name_TV;
     RelativeLayout container;
     LinearLayout textQuestion, imageQuestion;
-
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseUser mFirebaseUser;
+    private String mUserEmail;
+    private String mName;
 
 
     @Override
@@ -68,14 +75,34 @@ public class MainActivity extends AppCompatActivity {
         ImageAnswer1.setOnClickListener(answerListener);
         ImageAnswer2.setOnClickListener(answerListener);
         ImageAnswer3.setOnClickListener(answerListener);
+        
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        Bundle b = getIntent().getExtras();
+        if (mFirebaseUser == null && b == null) {
+            loadLogInView();
+        } else if (b == null) {
+            mUserEmail = mFirebaseUser.getEmail();
+            Name_TV.setText("Welcome " + mUserEmail);
+        } else {
+            mName = b.getString("name");
+            Name_TV.setText("Welcome " + mName);
+        }
+        
         setQuestionView();
 
-        Bundle b = getIntent().getExtras();
-        String name = b.getString("name");
-        Name_TV.setText("Hello " + name);
     }
 
+    private void loadLogInView() {
+        Intent intent = new Intent(this, SignInActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+
+
     private void setQuestionView() {
+
         container.setBackgroundColor(Color.WHITE);
         if (currentQ.hasImage()) {
             Question_TV.setText(currentQ.getQuestion());
@@ -198,5 +225,28 @@ public class MainActivity extends AppCompatActivity {
         }.start();
 
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_logout) {
+            mFirebaseAuth.signOut();
+            loadLogInView();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
