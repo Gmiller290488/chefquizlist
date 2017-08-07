@@ -30,16 +30,19 @@ package com.ctingcter.chefquizlist;
 
         private static final int NO_IMAGE_PROVIDED = -1;
 
-        public Question(int id, String question, String Answer1, String Answer2, String Answer3, String correctAnswer) {
+        private String mCategory;
+
+        public Question(int id, String question, String Answer1, String Answer2, String Answer3, String correctAnswer, String category) {
             mId = id;
             mQuestion = question;
             mAnswer1 = Answer1;
             mAnswer2 = Answer2;
             mAnswer3 = Answer3;
             mCorrectAnswer = correctAnswer;
+            mCategory = category;
         }
 
-    public Question(int id, String question, int imageAnswer1, int imageAnswer2, int imageAnswer3, int imageAnswerCorrect, int imageResourceId ) {
+    public Question(int id, String question, int imageAnswer1, int imageAnswer2, int imageAnswer3, int imageAnswerCorrect, int imageResourceId, String category ) {
         mId = id;
         mQuestion = question;
         mImageAnswer1 = imageAnswer1;
@@ -47,6 +50,7 @@ package com.ctingcter.chefquizlist;
         mImageAnswer3 = imageAnswer3;
         mImageCorrect = imageAnswerCorrect;
         mImageResourceId = imageResourceId;
+        mCategory = category;
     }
 
         public int getId() {
@@ -87,6 +91,8 @@ package com.ctingcter.chefquizlist;
     public String getCorrectanswer() {
         return mCorrectAnswer;
     }
+
+    public String getCategory() { return mCategory; }
 
         public void setId(int Id) {
             mId = Id;

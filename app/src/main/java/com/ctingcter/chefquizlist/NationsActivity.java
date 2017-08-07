@@ -3,9 +3,9 @@ package com.ctingcter.chefquizlist;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.MediaPlayer;
+import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,7 +20,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+/**
+ * Created by CTingCTer on 07/08/2017.
+ */
+
+public class NationsActivity extends AppCompatActivity {
     List<Question> questionList;
     float score;
     int qId;
@@ -41,15 +45,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ArrayList<Question> questions = new ArrayList<Question>();
-        questions.add(new Question(1, "Which chef owns The Fat Duck?", "Heston Blumenthal", "Gordon Ramsay", "Donald Duck", "Heston Blumenthal", "chefs"));
-        questions.add(new Question(2, "Which of these is romesco?", R.drawable.q4_1, R.drawable.q4_2, R.drawable.q4_3, R.drawable.q4_2, 0, "foods"));
-        questions.add(new Question(3, "Which of these is the name of a knife?", "pane", "flat", "deba", "deba", "all"));
-        questions.add(new Question(4, "Which of these is a fish?", "Turnip", "Turbot", "fillet", "Turbot", "foods"));
-        questions.add(new Question(5, "Which of these is Ferran Adria?", R.drawable.ferran, R.drawable.ramsay, R.drawable.rene, R.drawable.ferran, 0, "chefs"));
-        questions.add(new Question(6, "Mayonaisse is...", "an emulsification", "a mother sauce", "a dairy product", "an emulsification", "foods"));
-        questions.add(new Question(7, "What is a brunoise?", "A sauce", "A cake", "A knife cut", "A knife cut", "all"));
-        questions.add(new Question(8, "Gazpacho is what?", "Chilled tomato soup", "A type of pasta", "A rice dish", "Chilled tomato soup", "foods"));
-        questions.add(new Question(9, "What country is Gordon Ramsay from?", R.drawable.eng, R.drawable.wales, R.drawable.scot, R.drawable.scot, 0, "nations"));
+        questions.add(new Question(1, "What country is Gordon Ramsay from?", R.drawable.eng, R.drawable.wales, R.drawable.scot, R.drawable.scot, 0, "nations"));
 
 
         questionList = questions;
@@ -74,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
         ImageAnswer3.setOnClickListener(answerListener);
 
         mFirebaseAuth = FirebaseAuth.getInstance();
-
         setQuestionView();
 
 
@@ -153,29 +148,29 @@ public class MainActivity extends AppCompatActivity {
             container.setBackgroundColor(Color.RED);
 
 
-            }
-            new CountDownTimer(2000, 1000) {
-                public void onFinish() {
-                    if (qId < questionsCount) {
-                        currentQ = questionList.get(qId);
-                        setQuestionView();
-                    } else {
-                        Intent intent = new Intent(MainActivity.this, ResultActivity.class);
-                        Bundle b = new Bundle();
-                        score = ((score / questionsCount) * 100);
-                        b.putFloat("score", score); //Your score
-                        intent.putExtras(b); //Put your score to your next Intent
-                        startActivity(intent);
-                        finish();
-                    }
-                }
-
-                public void onTick(long millisUntilFinished) {
-                    // millisUntilFinished    The amount of time until finished.
-                }
-            }.start();
-
         }
+        new CountDownTimer(2000, 1000) {
+            public void onFinish() {
+                if (qId < questionsCount) {
+                    currentQ = questionList.get(qId);
+                    setQuestionView();
+                } else {
+                    Intent intent = new Intent(NationsActivity.this, ResultActivity.class);
+                    Bundle b = new Bundle();
+                    score = ((score / questionsCount) * 100);
+                    b.putFloat("score", score); //Your score
+                    intent.putExtras(b); //Put your score to your next Intent
+                    startActivity(intent);
+                    finish();
+                }
+            }
+
+            public void onTick(long millisUntilFinished) {
+                // millisUntilFinished    The amount of time until finished.
+            }
+        }.start();
+
+    }
 
 
     public void checkImageAnswer(int answer) {
@@ -198,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
                     currentQ = questionList.get(qId);
                     setQuestionView();
                 } else {
-                    Intent intent = new Intent(MainActivity.this, ResultActivity.class);
+                    Intent intent = new Intent(NationsActivity.this, ResultActivity.class);
                     Bundle b = new Bundle();
                     score = ((score/questionsCount)*100);
                     b.putFloat("score", score); //Your score

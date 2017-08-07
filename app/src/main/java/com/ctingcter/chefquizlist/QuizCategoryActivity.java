@@ -55,16 +55,17 @@ public class QuizCategoryActivity extends AppCompatActivity {
                 case R.id.all_TV:
                     Intent intent_all = new Intent(QuizCategoryActivity.this, MainActivity.class);
                     startActivity(intent_all);
+                    break;
                 case R.id.chefs_TV:
-                    Intent intent_chefs = new Intent(QuizCategoryActivity.this, MainActivity.class);
+                    Intent intent_chefs = new Intent(QuizCategoryActivity.this, ChefsActivity.class);
                     startActivity(intent_chefs);
                     break;
                 case R.id.nations_TV:
-                    Intent intent_nations = new Intent(QuizCategoryActivity.this, MainActivity.class);
+                    Intent intent_nations = new Intent(QuizCategoryActivity.this, NationsActivity.class);
                     startActivity(intent_nations);
                     break;
                 case R.id.foods_TV:
-                    Intent intent_foods = new Intent(QuizCategoryActivity.this, MainActivity.class);
+                    Intent intent_foods = new Intent(QuizCategoryActivity.this, FoodsActivity.class);
                     startActivity(intent_foods);
                     break;
             }
