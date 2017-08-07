@@ -31,7 +31,7 @@ public class NationsActivity extends AppCompatActivity {
     int questionsCount;
     Question currentQ;
     ImageView ImageAnswer1, ImageAnswer2, ImageAnswer3;
-    TextView Question_TV, Answer1_TV, Answer2_TV, Answer3_TV, Name_TV;
+    TextView Question_TV, Answer1_TV, Answer2_TV, Answer3_TV, Name_TV, Timer_TV;
     RelativeLayout container;
     LinearLayout textQuestion, imageQuestion;
     FirebaseAuth mFirebaseAuth;
@@ -51,6 +51,7 @@ public class NationsActivity extends AppCompatActivity {
         questionList = questions;
         questionsCount = questions.size();
         currentQ = questionList.get(qId);
+        Timer_TV = (TextView) findViewById(R.id.Timer_TV);
         Question_TV = (TextView) findViewById(R.id.Question_TV);
         ImageAnswer1 = (ImageView) findViewById(R.id.imageAnswer1);
         ImageAnswer2 = (ImageView) findViewById(R.id.imageAnswer2);
@@ -70,6 +71,26 @@ public class NationsActivity extends AppCompatActivity {
         ImageAnswer3.setOnClickListener(answerListener);
 
         mFirebaseAuth = FirebaseAuth.getInstance();
+        new CountDownTimer((questionsCount * 3) * 1000 + 1000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                int seconds = (int) (millisUntilFinished / 1000);
+                seconds = seconds % 60;
+                Timer_TV.setText("TIME : " + String.format("%02d", seconds));
+
+            }
+
+            public void onFinish() {
+                Intent intent = new Intent(NationsActivity.this, ResultActivity.class);
+                Bundle b = new Bundle();
+                score = ((score / questionsCount) * 100);
+                b.putFloat("score", score); //Your score
+                intent.putExtras(b); //Put your score to your next Intent
+                startActivity(intent);
+                finish();
+            }
+        }.start();
+        setQuestionView();
         setQuestionView();
 
 
