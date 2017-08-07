@@ -51,6 +51,9 @@ public class FoodsActivity extends AppCompatActivity
             questions.add(new Question(2, "Which of these is a fish?", "Turnip", "Turbot", "fillet", "Turbot", "foods"));
             questions.add(new Question(3, "Mayonaisse is...", "an emulsification", "a mother sauce", "a dairy product", "an emulsification", "foods"));
             questions.add(new Question(4, "Gazpacho is what?", "Chilled tomato soup", "A type of pasta", "A rice dish", "Chilled tomato soup", "foods"));
+            questions.add(new Question(5, "Feta cheese is made from?", "Cow's milk", "Sheep's milk", "Goat's milk", "Sheep's milk", "food"));
+            questions.add(new Question(6, "Which of these fruits is dorian?", R.drawable.dorian, R.drawable.dragon, R.drawable.spikymelon, R.drawable.dorian, 0, "foods"));
+            questions.add(new Question(7, "Which of these fish is halibut?", R.drawable.lemonsole, R.drawable.halibut, R.drawable.turbot, R.drawable.halibut, 0, "foods"));
 
 
         questionList = questions;
@@ -76,7 +79,7 @@ public class FoodsActivity extends AppCompatActivity
         ImageAnswer3.setOnClickListener(answerListener);
 
         mFirebaseAuth = FirebaseAuth.getInstance();
-            new CountDownTimer((questionsCount * 3) * 1000 + 1000, 1000) {
+            new CountDownTimer((questionsCount * 5) * 1000 + 1000, 1000) {
 
                 public void onTick(long millisUntilFinished) {
                     int seconds = (int) (millisUntilFinished / 1000);
@@ -175,7 +178,7 @@ public class FoodsActivity extends AppCompatActivity
 
 
         }
-        new CountDownTimer(2000, 1000) {
+        new CountDownTimer(1500, 1000) {
             public void onFinish() {
                 if (qId < questionsCount) {
                     currentQ = questionList.get(qId);

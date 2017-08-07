@@ -47,6 +47,14 @@ public class ChefsActivity extends AppCompatActivity {
             ArrayList<Question> questions = new ArrayList<Question>();
             questions.add(new Question(1, "Which chef owns The Fat Duck?", "Heston Blumenthal", "Gordon Ramsay", "Donald Duck", "Heston Blumenthal", "chefs"));
             questions.add(new Question(2, "Which of these is Ferran Adria?", R.drawable.ferran, R.drawable.ramsay, R.drawable.rene, R.drawable.ferran, 0, "chefs"));
+            questions.add(new Question(3, "Which chef owns D.O.M in Sao Paulo?", "Virgilio Martínez Véliz", "Joan Roca", "Alex Atala", "Alex Atala", "chefs"));
+            questions.add(new Question(4, "Which of these chefs is Albert Roux?", R.drawable.michelrouxjnr, R.drawable.albert, R.drawable.michel, R.drawable.albert, 0, "chefs"));
+            questions.add(new Question(5, "Which of these chefs have the most michelin stars? (2017)", R.drawable.robuchon, R.drawable.keller, R.drawable.ducasse, R.drawable.robuchon, 0, "chefs"));
+            questions.add(new Question(6, "Which chef has two establishments in Marlow?", "Heston Blumenthal", "Natahan Outlaw", "Tom Kerridge", "Tom Kerridge", "chefs"));
+            questions.add(new Question(7, "Which legendary chef owned 3 michelin starred \"La Tante Claire\"?", "Marco Pierre White", "Pierre Koffman", "Nico Ladenis", "Pierre Koffman", "chefs"));
+            questions.add(new Question(8, "Which of these restaurants is NOT owned by Heston Blumenthal?", "The Crowne", "The Owls Head", "The Perfectionists Cafe", "The Owls Head", "chefs"));
+            questions.add(new Question(9, "Which of these chefs doesn't have a restaurant in Manchester?", R.drawable.clifford, R.drawable.byrne, R.drawable.reid, R.drawable.clifford, 0 ,"chefs"));
+            questions.add(new Question(10, "Which chef owns \"64 degrees\"?", "Tommy Banks", "Michael Bremner", "Simon Hulstone", "Simon Hulstone", "chefs"));
 
 
 
@@ -75,7 +83,7 @@ public class ChefsActivity extends AppCompatActivity {
             mFirebaseAuth = FirebaseAuth.getInstance();
 
 
-            new CountDownTimer((questionsCount * 3) * 1000 + 1000, 1000) {
+            new CountDownTimer((questionsCount * 5) * 1000 + 1000, 1000) {
 
                 public void onTick(long millisUntilFinished) {
                     int seconds = (int) (millisUntilFinished / 1000);
@@ -173,7 +181,7 @@ public class ChefsActivity extends AppCompatActivity {
 
 
             }
-            new CountDownTimer(2000, 1000) {
+            new CountDownTimer(1500, 1000) {
                 public void onFinish() {
                     if (qId < questionsCount) {
                         currentQ = questionList.get(qId);

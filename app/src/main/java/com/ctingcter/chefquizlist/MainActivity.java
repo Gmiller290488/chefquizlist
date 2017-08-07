@@ -50,6 +50,19 @@ public class MainActivity extends AppCompatActivity {
         questions.add(new Question(7, "What is a brunoise?", "A sauce", "A cake", "A knife cut", "A knife cut", "all"));
         questions.add(new Question(8, "Gazpacho is what?", "Chilled tomato soup", "A type of pasta", "A rice dish", "Chilled tomato soup", "foods"));
         questions.add(new Question(9, "What country is Gordon Ramsay from?", R.drawable.eng, R.drawable.wales, R.drawable.scot, R.drawable.scot, 0, "nations"));
+        questions.add(new Question(10, "Which chef owns D.O.M in Sao Paulo?", "Virgilio Martínez Véliz", "Joan Roca", "Alex Atala", "Alex Atala", "chefs"));
+        questions.add(new Question(11, "Which of these chefs is Albert Roux?", R.drawable.michelrouxjnr, R.drawable.albert, R.drawable.michel, R.drawable.albert, 0, "chefs"));
+        questions.add(new Question(12, "Feta cheese is made from?", "Cow's milk", "Sheep's milk", "Goat's milk", "Sheep's milk", "food"));
+        questions.add(new Question(13, "Which of these chefs have the most michelin stars? (2017)", R.drawable.robuchon, R.drawable.keller, R.drawable.ducasse, R.drawable.robuchon, 0, "chefs"));
+        questions.add(new Question(14, "Which chef has two establishments in Marlow?", "Heston Blumenthal", "Natahan Outlaw", "Tom Kerridge", "Tom Kerridge", "chefs"));
+        questions.add(new Question(15, "Which legendary chef owned 3 michelin starred \"La Tante Claire\"?", "Marco Pierre White", "Pierre Koffman", "Nico Ladenis", "Pierre Koffman", "chefs"));
+        questions.add(new Question(16, "Which of these fruits is dorian?", R.drawable.dorian, R.drawable.dragon, R.drawable.spikymelon, R.drawable.dorian, 0, "foods"));
+        questions.add(new Question(17, "Which of these restaurants is NOT owned by Heston Blumenthal?", "The Crowne", "The Owls Head", "The Perfectionists Cafe", "The Owls Head", "chefs"));
+        questions.add(new Question(18, "Which of these fish is halibut?", R.drawable.lemonsole, R.drawable.halibut, R.drawable.turbot, R.drawable.halibut, 0, "foods"));
+        questions.add(new Question(19, "Which of these chefs doesn't have a restaurant in Manchester?", R.drawable.clifford, R.drawable.byrne, R.drawable.reid, R.drawable.clifford, 0 ,"chefs"));
+        questions.add(new Question(20, "Which chef owns \"64 degrees\"?", "Tommy Banks", "Michael Bremner", "Simon Hulstone", "Simon Hulstone", "chefs"));
+
+
 
 
         questionList = questions;
@@ -76,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
 
         mFirebaseAuth = FirebaseAuth.getInstance();
 
-        new CountDownTimer((questionsCount * 3) * 1000 + 1000, 1000) {
+        new CountDownTimer((questionsCount * 5) * 1000 + 1000, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 int seconds = (int) (millisUntilFinished / 1000);
@@ -177,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
 
 
             }
-            new CountDownTimer(2000, 1000) {
+            new CountDownTimer(1500, 1000) {
                 public void onFinish() {
                     if (qId < questionsCount) {
                         currentQ = questionList.get(qId);

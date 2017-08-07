@@ -71,7 +71,7 @@ public class NationsActivity extends AppCompatActivity {
         ImageAnswer3.setOnClickListener(answerListener);
 
         mFirebaseAuth = FirebaseAuth.getInstance();
-        new CountDownTimer((questionsCount * 3) * 1000 + 1000, 1000) {
+        new CountDownTimer((questionsCount * 5) * 1000 + 1000, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 int seconds = (int) (millisUntilFinished / 1000);
@@ -170,7 +170,7 @@ public class NationsActivity extends AppCompatActivity {
 
 
         }
-        new CountDownTimer(2000, 1000) {
+        new CountDownTimer(1500, 1000) {
             public void onFinish() {
                 if (qId < questionsCount) {
                     currentQ = questionList.get(qId);
