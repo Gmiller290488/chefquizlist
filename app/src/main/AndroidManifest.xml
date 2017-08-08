@@ -10,7 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".QuizCategoryActivity" android:configChanges="orientation|screenSize">
+        <activity android:name=".QuizCategoryActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -51,6 +53,7 @@
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme"
+            android:screenOrientation="portrait"
             android:parentActivityName=".SignInActivity" >
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
@@ -60,6 +63,7 @@
 
         <activity
             android:name=".ChefsActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:parentActivityName=".QuizCategoryActivity" >
             <!-- Parent activity meta-data to support 4.0 and lower -->
@@ -70,6 +74,7 @@
 
         <activity
             android:name="FoodsActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:parentActivityName=".QuizCategoryActivity" >
             <!-- Parent activity meta-data to support 4.0 and lower -->
@@ -80,6 +85,7 @@
 
         <activity
             android:name="NationsActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:parentActivityName=".QuizCategoryActivity" >
             <!-- Parent activity meta-data to support 4.0 and lower -->

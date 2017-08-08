@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    android:layout_height="match_parent"
+    android:background="@drawable/meringue">
+    <LinearLayout
+        android:background="@drawable/customborder"
+        android:layout_margin="4dp"
+        android:padding="8dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
     <EditText
+
         android:id="@+id/emailField"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -37,19 +46,36 @@
     <TextView
         android:id="@+id/signUp_Link"
         android:layout_gravity="center"
-        android:textColor="@color/colorPrimaryDark"
+        android:textColor="#000"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/sign_up_here"
         android:linksClickable="true"/>
+        </LinearLayout>
 
+    <LinearLayout
+
+        android:padding="8dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/customborder">
+    <TextView
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Or Sign in using your Google Account:"
+        android:textColor="#000"/>
     <com.google.android.gms.common.SignInButton
         android:id="@+id/sign_in_google_btn"
         android:layout_marginTop="16dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center" />
-
+</LinearLayout>
 
 
         />

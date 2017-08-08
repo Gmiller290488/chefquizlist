@@ -35,7 +35,7 @@ public class FoodsActivity extends AppCompatActivity
         ImageView ImageAnswer1, ImageAnswer2, ImageAnswer3;
         TextView Question_TV, Answer1_TV, Answer2_TV, Answer3_TV, Name_TV, Timer_TV;
         RelativeLayout container;
-        LinearLayout textQuestion, imageQuestion;
+        LinearLayout textQuestion, imageQuestion, innerContainer;
         FirebaseAuth mFirebaseAuth;
 
 
@@ -69,6 +69,7 @@ public class FoodsActivity extends AppCompatActivity
         Answer3_TV = (TextView) findViewById(R.id.Answer3_TV);
         Name_TV = (TextView) findViewById(R.id.name_TV);
         container = (RelativeLayout) findViewById(R.id.container);
+            innerContainer = (LinearLayout) findViewById(R.id.innerContainer);
         imageQuestion = (LinearLayout) findViewById(R.id.imageQuestion);
         textQuestion = (LinearLayout) findViewById(R.id.textQuestion);
         Answer1_TV.setOnClickListener(answerListener);
@@ -79,11 +80,10 @@ public class FoodsActivity extends AppCompatActivity
         ImageAnswer3.setOnClickListener(answerListener);
 
         mFirebaseAuth = FirebaseAuth.getInstance();
-            new CountDownTimer((questionsCount * 5) * 1000 + 1000, 1000) {
+            new CountDownTimer((questionsCount * 6) * 1000 + 1000, 1000) {
 
                 public void onTick(long millisUntilFinished) {
                     int seconds = (int) (millisUntilFinished / 1000);
-                    seconds = seconds % 60;
                     Timer_TV.setText("TIME : " + String.format("%02d", seconds));
 
                 }
@@ -114,7 +114,7 @@ public class FoodsActivity extends AppCompatActivity
 
     private void setQuestionView() {
 
-        container.setBackgroundColor(Color.WHITE);
+        innerContainer.setBackgroundColor(getResources().getColor(R.color.containerColour));
             if (currentQ.hasImage()) {
                 Question_TV.setText(currentQ.getQuestion());
                 imageQuestion.setVisibility(View.VISIBLE);
@@ -169,12 +169,12 @@ public class FoodsActivity extends AppCompatActivity
             score++;
             MediaPlayer mp = MediaPlayer.create(this, R.raw.right);
             mp.start();
-            container.setBackgroundColor(Color.GREEN);
+            innerContainer.setBackgroundColor(getResources().getColor(R.color.correctColour));
 
         } else if (!currentQ.getCorrectanswer().equals(answer)) {
             MediaPlayer mp = MediaPlayer.create(this, R.raw.wrong);
             mp.start();
-            container.setBackgroundColor(Color.RED);
+            innerContainer.setBackgroundColor(getResources().getColor(R.color.wrongColour));
 
 
         }
@@ -208,12 +208,12 @@ public class FoodsActivity extends AppCompatActivity
             score++;
             MediaPlayer mp = MediaPlayer.create(this, R.raw.right);
             mp.start();
-            container.setBackgroundColor(Color.GREEN);
+            innerContainer.setBackgroundColor(getResources().getColor(R.color.correctColour));
 
         } else {
             MediaPlayer mp = MediaPlayer.create(this, R.raw.wrong);
             mp.start();
-            container.setBackgroundColor(Color.RED);
+            innerContainer.setBackgroundColor(getResources().getColor(R.color.wrongColour));
 
         }
         new CountDownTimer(2000, 1000) {

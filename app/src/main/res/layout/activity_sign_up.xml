@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    android:layout_height="match_parent"
+    android:background="@drawable/meringue"
+   >
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_margin="8dp"
+        android:background="@drawable/customborder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTintMode="src_in"
+        android:backgroundTint="@color/cardview_shadow_start_color">
     <EditText
         android:id="@+id/emailField"
         android:layout_width="match_parent"
@@ -44,3 +53,4 @@
         android:layout_below="@+id/passwordField"
         android:text="@string/sign_up_button_label" />
 </LinearLayout>
+    </LinearLayout>

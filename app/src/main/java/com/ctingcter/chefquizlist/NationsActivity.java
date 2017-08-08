@@ -33,9 +33,9 @@ public class NationsActivity extends AppCompatActivity {
     ImageView ImageAnswer1, ImageAnswer2, ImageAnswer3;
     TextView Question_TV, Answer1_TV, Answer2_TV, Answer3_TV, Name_TV, Timer_TV;
     RelativeLayout container;
-    LinearLayout textQuestion, imageQuestion;
+    LinearLayout textQuestion, imageQuestion, innerContainer;
     FirebaseAuth mFirebaseAuth;
-    String mCategory;
+
 
     /* Need to implement a way to check which category was selected and thus which questions to show */
 
@@ -63,6 +63,7 @@ public class NationsActivity extends AppCompatActivity {
         container = (RelativeLayout) findViewById(R.id.container);
         imageQuestion = (LinearLayout) findViewById(R.id.imageQuestion);
         textQuestion = (LinearLayout) findViewById(R.id.textQuestion);
+        innerContainer = (LinearLayout) findViewById(R.id.innerContainer);
         Answer1_TV.setOnClickListener(answerListener);
         Answer2_TV.setOnClickListener(answerListener);
         Answer3_TV.setOnClickListener(answerListener);
@@ -71,11 +72,10 @@ public class NationsActivity extends AppCompatActivity {
         ImageAnswer3.setOnClickListener(answerListener);
 
         mFirebaseAuth = FirebaseAuth.getInstance();
-        new CountDownTimer((questionsCount * 5) * 1000 + 1000, 1000) {
+        new CountDownTimer((questionsCount * 6) * 1000 + 1000, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 int seconds = (int) (millisUntilFinished / 1000);
-                seconds = seconds % 60;
                 Timer_TV.setText("TIME : " + String.format("%02d", seconds));
 
             }
@@ -91,7 +91,8 @@ public class NationsActivity extends AppCompatActivity {
             }
         }.start();
         setQuestionView();
-        setQuestionView();
+
+
 
 
     }
@@ -106,7 +107,7 @@ public class NationsActivity extends AppCompatActivity {
 
     private void setQuestionView() {
 
-        container.setBackgroundColor(Color.WHITE);
+        container.setBackgroundColor(getResources().getColor(R.color.containerColour));
             if (currentQ.hasImage()) {
                 Question_TV.setText(currentQ.getQuestion());
                 imageQuestion.setVisibility(View.VISIBLE);
@@ -161,12 +162,12 @@ public class NationsActivity extends AppCompatActivity {
             score++;
             MediaPlayer mp = MediaPlayer.create(this, R.raw.right);
             mp.start();
-            container.setBackgroundColor(Color.GREEN);
+            innerContainer.setBackgroundColor(getResources().getColor(R.color.correctColour));
 
         } else if (!currentQ.getCorrectanswer().equals(answer)) {
             MediaPlayer mp = MediaPlayer.create(this, R.raw.wrong);
             mp.start();
-            container.setBackgroundColor(Color.RED);
+            innerContainer.setBackgroundColor(Color.RED);
 
 
         }
@@ -200,12 +201,12 @@ public class NationsActivity extends AppCompatActivity {
             score++;
             MediaPlayer mp = MediaPlayer.create(this, R.raw.right);
             mp.start();
-            container.setBackgroundColor(Color.GREEN);
+            innerContainer.setBackgroundColor(getResources().getColor(R.color.correctColour));
 
         } else {
             MediaPlayer mp = MediaPlayer.create(this, R.raw.wrong);
             mp.start();
-            container.setBackgroundColor(Color.RED);
+            innerContainer.setBackgroundColor(getResources().getColor(R.color.wrongColour));
 
         }
         new CountDownTimer(2000, 1000) {

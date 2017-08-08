@@ -16,6 +16,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,16 +34,16 @@ public class MainActivity extends AppCompatActivity {
     ImageView ImageAnswer1, ImageAnswer2, ImageAnswer3;
     TextView Question_TV, Answer1_TV, Answer2_TV, Answer3_TV, Name_TV, Timer_TV;
     RelativeLayout container;
-    LinearLayout textQuestion, imageQuestion;
+    LinearLayout textQuestion, imageQuestion, innerContainer;
     FirebaseAuth mFirebaseAuth;
-    int timeRemaining;
 
-    /* Need to implement a way to check which category was selected and thus which questions to show */
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         ArrayList<Question> questions = new ArrayList<Question>();
         questions.add(new Question(1, "Which chef owns The Fat Duck?", "Heston Blumenthal", "Gordon Ramsay", "Donald Duck", "Heston Blumenthal", "chefs"));
@@ -59,10 +64,8 @@ public class MainActivity extends AppCompatActivity {
         questions.add(new Question(16, "Which of these fruits is dorian?", R.drawable.dorian, R.drawable.dragon, R.drawable.spikymelon, R.drawable.dorian, 0, "foods"));
         questions.add(new Question(17, "Which of these restaurants is NOT owned by Heston Blumenthal?", "The Crowne", "The Owls Head", "The Perfectionists Cafe", "The Owls Head", "chefs"));
         questions.add(new Question(18, "Which of these fish is halibut?", R.drawable.lemonsole, R.drawable.halibut, R.drawable.turbot, R.drawable.halibut, 0, "foods"));
-        questions.add(new Question(19, "Which of these chefs doesn't have a restaurant in Manchester?", R.drawable.clifford, R.drawable.byrne, R.drawable.reid, R.drawable.clifford, 0 ,"chefs"));
-        questions.add(new Question(20, "Which chef owns \"64 degrees\"?", "Tommy Banks", "Michael Bremner", "Simon Hulstone", "Simon Hulstone", "chefs"));
-
-
+        questions.add(new Question(19, "Which of these chefs doesn't have a restaurant in Manchester?", R.drawable.clifford, R.drawable.byrne, R.drawable.reid, R.drawable.clifford, 0, "chefs"));
+        questions.add(new Question(20, "Which chef owns \"64 degrees\"?", "Tommy Banks", "Michael Bremner", "Simon Hulstone", "Michael Bremner", "chefs"));
 
 
         questionList = questions;
@@ -78,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
         Answer3_TV = (TextView) findViewById(R.id.Answer3_TV);
         Name_TV = (TextView) findViewById(R.id.name_TV);
         container = (RelativeLayout) findViewById(R.id.container);
+        innerContainer = (LinearLayout) findViewById(R.id.innerContainer);
         imageQuestion = (LinearLayout) findViewById(R.id.imageQuestion);
         textQuestion = (LinearLayout) findViewById(R.id.textQuestion);
         Answer1_TV.setOnClickListener(answerListener);
@@ -87,13 +91,12 @@ public class MainActivity extends AppCompatActivity {
         ImageAnswer2.setOnClickListener(answerListener);
         ImageAnswer3.setOnClickListener(answerListener);
 
-        mFirebaseAuth = FirebaseAuth.getInstance();
 
-        new CountDownTimer((questionsCount * 5) * 1000 + 1000, 1000) {
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        new CountDownTimer((questionsCount * 6) * 1000 + 1000, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 int seconds = (int) (millisUntilFinished / 1000);
-                seconds = seconds % 60;
                 Timer_TV.setText("TIME : " + String.format("%02d", seconds));
 
             }
@@ -109,7 +112,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }.start();
         setQuestionView();
-
     }
 
 
@@ -126,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setQuestionView() {
 
-        container.setBackgroundColor(Color.WHITE);
+         innerContainer.setBackgroundColor(getResources().getColor(R.color.containerColour));
             if (currentQ.hasImage()) {
                 Question_TV.setText(currentQ.getQuestion());
                 imageQuestion.setVisibility(View.VISIBLE);
@@ -181,12 +183,12 @@ public class MainActivity extends AppCompatActivity {
             score++;
             MediaPlayer mp = MediaPlayer.create(this, R.raw.right);
             mp.start();
-            container.setBackgroundColor(Color.GREEN);
+            innerContainer.setBackgroundColor(getResources().getColor(R.color.correctColour));
 
         } else if (!currentQ.getCorrectanswer().equals(answer)) {
             MediaPlayer mp = MediaPlayer.create(this, R.raw.wrong);
             mp.start();
-            container.setBackgroundColor(Color.RED);
+            innerContainer.setBackgroundColor(getResources().getColor(R.color.wrongColour));
 
 
             }
@@ -220,12 +222,12 @@ public class MainActivity extends AppCompatActivity {
             score++;
             MediaPlayer mp = MediaPlayer.create(this, R.raw.right);
             mp.start();
-            container.setBackgroundColor(Color.GREEN);
+            innerContainer.setBackgroundColor(getResources().getColor(R.color.correctColour));
 
         } else {
             MediaPlayer mp = MediaPlayer.create(this, R.raw.wrong);
             mp.start();
-            container.setBackgroundColor(Color.RED);
+            innerContainer.setBackgroundColor(getResources().getColor(R.color.wrongColour));
 
         }
         new CountDownTimer(2000, 1000) {
