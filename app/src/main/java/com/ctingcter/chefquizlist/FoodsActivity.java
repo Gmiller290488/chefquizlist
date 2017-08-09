@@ -37,6 +37,7 @@ public class FoodsActivity extends AppCompatActivity
         RelativeLayout container;
         LinearLayout textQuestion, imageQuestion, innerContainer;
         FirebaseAuth mFirebaseAuth;
+        Boolean soundOff = false;
 
 
     /* Need to implement a way to check which category was selected and thus which questions to show */
@@ -167,13 +168,17 @@ public class FoodsActivity extends AppCompatActivity
 
         if (currentQ.getCorrectanswer().equals(answer)) {
             score++;
-            MediaPlayer mp = MediaPlayer.create(this, R.raw.right);
-            mp.start();
+            if (soundOff = false) {
+                MediaPlayer mp = MediaPlayer.create(this, R.raw.right);
+                mp.start();
+            }
             innerContainer.setBackgroundColor(getResources().getColor(R.color.correctColour));
 
-        } else if (!currentQ.getCorrectanswer().equals(answer)) {
-            MediaPlayer mp = MediaPlayer.create(this, R.raw.wrong);
-            mp.start();
+        } else {
+            if (soundOff = false) {
+                MediaPlayer mp = MediaPlayer.create(this, R.raw.wrong);
+                mp.start();
+            }
             innerContainer.setBackgroundColor(getResources().getColor(R.color.wrongColour));
 
 
@@ -206,13 +211,17 @@ public class FoodsActivity extends AppCompatActivity
 
         if (currentQ.getImageCorrect() == (answer)) {
             score++;
-            MediaPlayer mp = MediaPlayer.create(this, R.raw.right);
-            mp.start();
+            if (soundOff = false) {
+                MediaPlayer mp = MediaPlayer.create(this, R.raw.right);
+                mp.start();
+            }
             innerContainer.setBackgroundColor(getResources().getColor(R.color.correctColour));
 
         } else {
-            MediaPlayer mp = MediaPlayer.create(this, R.raw.wrong);
-            mp.start();
+            if (soundOff = false) {
+                MediaPlayer mp = MediaPlayer.create(this, R.raw.wrong);
+                mp.start();
+            }
             innerContainer.setBackgroundColor(getResources().getColor(R.color.wrongColour));
 
         }
@@ -258,6 +267,13 @@ public class FoodsActivity extends AppCompatActivity
         if (id == R.id.action_logout) {
             mFirebaseAuth.signOut();
             loadLogInView();
+        }
+        if (id == R.id.action_soundOff){
+            if (soundOff = false) {
+                soundOff = true;
+            } else {
+                soundOff = false;
+            }
         }
 
         return super.onOptionsItemSelected(item);

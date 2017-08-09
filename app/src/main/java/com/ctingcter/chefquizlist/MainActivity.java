@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     RelativeLayout container;
     LinearLayout textQuestion, imageQuestion, innerContainer;
     FirebaseAuth mFirebaseAuth;
+    Boolean soundOff = false;
 
 
 
@@ -65,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         questions.add(new Question(17, "Which of these restaurants is NOT owned by Heston Blumenthal?", "The Crowne", "The Owls Head", "The Perfectionists Cafe", "The Owls Head", "chefs"));
         questions.add(new Question(18, "Which of these fish is halibut?", R.drawable.lemonsole, R.drawable.halibut, R.drawable.turbot, R.drawable.halibut, 0, "foods"));
         questions.add(new Question(19, "Which of these chefs doesn't have a restaurant in Manchester?", R.drawable.clifford, R.drawable.byrne, R.drawable.reid, R.drawable.clifford, 0, "chefs"));
-        questions.add(new Question(20, "Which chef owns \"64 degrees\"?", "Tommy Banks", "Michael Bremner", "Simon Hulstone", "Michael Bremner", "chefs"));
+        
 
 
         questionList = questions;
@@ -181,13 +182,17 @@ public class MainActivity extends AppCompatActivity {
 
         if (currentQ.getCorrectanswer().equals(answer)) {
             score++;
-            MediaPlayer mp = MediaPlayer.create(this, R.raw.right);
-            mp.start();
+            if (soundOff = false) {
+                MediaPlayer mp = MediaPlayer.create(this, R.raw.right);
+                mp.start();
+            }
             innerContainer.setBackgroundColor(getResources().getColor(R.color.correctColour));
 
         } else if (!currentQ.getCorrectanswer().equals(answer)) {
-            MediaPlayer mp = MediaPlayer.create(this, R.raw.wrong);
-            mp.start();
+            if (soundOff = false) {
+                MediaPlayer mp = MediaPlayer.create(this, R.raw.wrong);
+                mp.start();
+            }
             innerContainer.setBackgroundColor(getResources().getColor(R.color.wrongColour));
 
 
@@ -220,13 +225,17 @@ public class MainActivity extends AppCompatActivity {
 
         if (currentQ.getImageCorrect() == (answer)) {
             score++;
-            MediaPlayer mp = MediaPlayer.create(this, R.raw.right);
-            mp.start();
+            if (soundOff = false) {
+                MediaPlayer mp = MediaPlayer.create(this, R.raw.right);
+                mp.start();
+            }
             innerContainer.setBackgroundColor(getResources().getColor(R.color.correctColour));
 
         } else {
-            MediaPlayer mp = MediaPlayer.create(this, R.raw.wrong);
-            mp.start();
+            if (soundOff = false) {
+                MediaPlayer mp = MediaPlayer.create(this, R.raw.wrong);
+                mp.start();
+            }
             innerContainer.setBackgroundColor(getResources().getColor(R.color.wrongColour));
 
         }
@@ -274,6 +283,13 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_logout) {
             mFirebaseAuth.signOut();
             loadLogInView();
+        }
+        if (id == R.id.action_soundOff){
+            if (soundOff = false) {
+                soundOff = true;
+            } else {
+                soundOff = false;
+            }
         }
 
         return super.onOptionsItemSelected(item);
