@@ -3,8 +3,6 @@ package com.ctingcter.chefquizlist;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.CountDownTimer;
@@ -17,19 +15,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static android.app.PendingIntent.getActivity;
+import static android.view.View.GONE;
 
 public class MainActivity extends AppCompatActivity {
     List<Question> questionList;
@@ -38,11 +31,12 @@ public class MainActivity extends AppCompatActivity {
     int questionsCount;
     int soundOff;
     int timeLeft = 0;
+    int lives = 3;
     Question currentQ;
     ImageView ImageAnswer1, ImageAnswer2, ImageAnswer3;
-    TextView Question_TV, Answer1_TV, Answer2_TV, Answer3_TV, Name_TV, Timer_TV;
+    TextView Question_TV, Answer1_TV, Answer2_TV, Answer3_TV, Name_TV, Timer_TV, Lives1_TV, Lives2_TV, Lives3_TV;
     RelativeLayout container;
-    LinearLayout textQuestion, imageQuestion, innerContainer;
+    LinearLayout textQuestion, imageQuestion, innerContainer, LivesContainer;
     FirebaseAuth mFirebaseAuth;
     CountDownTimer timer;
 
@@ -139,7 +133,11 @@ public class MainActivity extends AppCompatActivity {
         Answer1_TV = (TextView) findViewById(R.id.Answer1_TV);
         Answer2_TV = (TextView) findViewById(R.id.Answer2_TV);
         Answer3_TV = (TextView) findViewById(R.id.Answer3_TV);
+        Lives1_TV = (TextView) findViewById(R.id.Lives1_TV);
+        Lives2_TV = (TextView) findViewById(R.id.Lives2_TV);
+        Lives3_TV = (TextView) findViewById(R.id.Lives3_TV);
         Name_TV = (TextView) findViewById(R.id.name_TV);
+        LivesContainer = (LinearLayout) findViewById(R.id.LivesContainer);
         container = (RelativeLayout) findViewById(R.id.container);
         innerContainer = (LinearLayout) findViewById(R.id.innerContainer);
         imageQuestion = (LinearLayout) findViewById(R.id.imageQuestion);
@@ -172,14 +170,14 @@ public class MainActivity extends AppCompatActivity {
         if (currentQ.hasImage()) {
             Question_TV.setText(currentQ.getQuestion());
             imageQuestion.setVisibility(View.VISIBLE);
-            textQuestion.setVisibility(View.GONE);
+            textQuestion.setVisibility(GONE);
             ImageAnswer1.setImageResource(currentQ.getImageAnswer1());
             ImageAnswer2.setImageResource(currentQ.getImageAnswer2());
             ImageAnswer3.setImageResource(currentQ.getImageAnswer3());
             qId++;
         } else {
             textQuestion.setVisibility(View.VISIBLE);
-            imageQuestion.setVisibility(View.GONE);
+            imageQuestion.setVisibility(GONE);
             Question_TV.setText(currentQ.getQuestion());
             Answer1_TV.setText(currentQ.getAnswer1());
             Answer2_TV.setText(currentQ.getAnswer2());
@@ -255,6 +253,8 @@ public class MainActivity extends AppCompatActivity {
                 if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
 
                     MediaPlayer mp = MediaPlayer.create(this, R.raw.wrong);
+                    lives--;
+                    checkLives(lives);
                     mp.start();
                     mp.setOnCompletionListener(mCompletionListener);
                 }
@@ -329,6 +329,8 @@ public class MainActivity extends AppCompatActivity {
                     MediaPlayer mp = MediaPlayer.create(this, R.raw.wrong);
                     mp.start();
                     mp.setOnCompletionListener(mCompletionListener);
+                    lives--;
+                    checkLives(lives);
                 }
             }
             innerContainer.setBackgroundColor(getResources().getColor(R.color.wrongColour));
@@ -356,6 +358,25 @@ public class MainActivity extends AppCompatActivity {
         }.start();
 
 
+    }
+
+    private void checkLives(int lives) {
+        if (lives == 3) {
+            Lives3_TV.setVisibility(GONE);
+        } else if (lives == 2) {
+            Lives2_TV.setVisibility(GONE);
+        } else if (lives == 1) {
+            Lives1_TV.setVisibility(GONE);
+        }
+        if (lives == 0) {
+            Intent intent = new Intent(MainActivity.this, ResultActivity.class);
+            Bundle b = new Bundle();
+            score = ((score / questionsCount) * 100);
+            b.putFloat("score", score); //Your score
+            intent.putExtras(b); //Put your score to your next Intent
+            startActivity(intent);
+            finish();
+        }
     }
 
 

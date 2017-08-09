@@ -417,7 +417,7 @@ public class FoodsActivity extends AppCompatActivity
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putInt("timeLeftSave", timeLeft);
             editor.commit();
-    
+
 
         }
 
