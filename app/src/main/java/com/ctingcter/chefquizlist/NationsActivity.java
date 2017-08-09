@@ -1,7 +1,10 @@
 package com.ctingcter.chefquizlist;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -29,21 +32,74 @@ public class NationsActivity extends AppCompatActivity {
     float score;
     int qId;
     int questionsCount;
+    int soundOff;
+    int timeLeft = 0;
     Question currentQ;
     ImageView ImageAnswer1, ImageAnswer2, ImageAnswer3;
     TextView Question_TV, Answer1_TV, Answer2_TV, Answer3_TV, Name_TV, Timer_TV;
     RelativeLayout container;
     LinearLayout textQuestion, imageQuestion, innerContainer;
     FirebaseAuth mFirebaseAuth;
-    int soundOff;
+    CountDownTimer timer;
+
+    /**
+     * Handles playback of all the sound files
+     */
+    private MediaPlayer mp;
+    /**
+     * Handles audio focus when playing a sound file
+     */
+    private AudioManager mAudioManager;
 
 
-    /* Need to implement a way to check which category was selected and thus which questions to show */
+    /**
+     * This listener gets triggered whenever the audio focus changes
+     * (i.e., we gain or lose audio focus because of another app or device).
+     */
+    private AudioManager.OnAudioFocusChangeListener mOnAudioFocusChangeListener = new AudioManager.OnAudioFocusChangeListener() {
+        @Override
+        public void onAudioFocusChange(int focusChange) {
+            if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT ||
+                    focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK) {
+                // The AUDIOFOCUS_LOSS_TRANSIENT case means that we've lost audio focus for a
+                // short amount of time. The AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK case means that
+                // our app is allowed to continue playing sound but at a lower volume. We'll treat
+                // both cases the same way because our app is playing short sound files.
+
+                // Pause playback and reset player to the start of the file. That way, we can
+                // play the word from the beginning when we resume playback.
+                mp.pause();
+                mp.seekTo(0);
+            } else if (focusChange == AudioManager.AUDIOFOCUS_GAIN) {
+                // The AUDIOFOCUS_GAIN case means we have regained focus and can resume playback.
+                mp.start();
+            } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS) {
+                // The AUDIOFOCUS_LOSS case means we've lost audio focus and
+                // Stop playback and clean up resources
+                releaseMediaPlayer();
+            }
+        }
+    };
+
+    /**
+     * This listener gets triggered when the {@link MediaPlayer} has completed
+     * playing the audio file.
+     */
+    private MediaPlayer.OnCompletionListener mCompletionListener = new MediaPlayer.OnCompletionListener() {
+        @Override
+        public void onCompletion(MediaPlayer mediaPlayer) {
+            // Now that the sound file has finished playing, release the media player resources.
+            releaseMediaPlayer();
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // Create and setup the {@link AudioManager} to request audio focus
+        mAudioManager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
 
         ArrayList<Question> questions = new ArrayList<Question>();
         questions.add(new Question(1, "What country is Gordon Ramsay from?", R.drawable.eng, R.drawable.wales, R.drawable.scot, R.drawable.scot, 0, "nations"));
@@ -62,9 +118,9 @@ public class NationsActivity extends AppCompatActivity {
         Answer3_TV = (TextView) findViewById(R.id.Answer3_TV);
         Name_TV = (TextView) findViewById(R.id.name_TV);
         container = (RelativeLayout) findViewById(R.id.container);
+        innerContainer = (LinearLayout) findViewById(R.id.innerContainer);
         imageQuestion = (LinearLayout) findViewById(R.id.imageQuestion);
         textQuestion = (LinearLayout) findViewById(R.id.textQuestion);
-        innerContainer = (LinearLayout) findViewById(R.id.innerContainer);
         Answer1_TV.setOnClickListener(answerListener);
         Answer2_TV.setOnClickListener(answerListener);
         Answer3_TV.setOnClickListener(answerListener);
@@ -72,31 +128,11 @@ public class NationsActivity extends AppCompatActivity {
         ImageAnswer2.setOnClickListener(answerListener);
         ImageAnswer3.setOnClickListener(answerListener);
 
+
         mFirebaseAuth = FirebaseAuth.getInstance();
-        new CountDownTimer((questionsCount * 6) * 1000 + 1000, 1000) {
-
-            public void onTick(long millisUntilFinished) {
-                int seconds = (int) (millisUntilFinished / 1000);
-                Timer_TV.setText("TIME : " + String.format("%02d", seconds));
-
-            }
-
-            public void onFinish() {
-                Intent intent = new Intent(NationsActivity.this, ResultActivity.class);
-                Bundle b = new Bundle();
-                score = ((score / questionsCount) * 100);
-                b.putFloat("score", score); //Your score
-                intent.putExtras(b); //Put your score to your next Intent
-                startActivity(intent);
-                finish();
-            }
-        }.start();
         setQuestionView();
-
-
-
-
     }
+
 
     private void loadLogInView() {
         Intent intent = new Intent(this, SignInActivity.class);
@@ -108,27 +144,26 @@ public class NationsActivity extends AppCompatActivity {
 
     private void setQuestionView() {
 
-        container.setBackgroundColor(getResources().getColor(R.color.containerColour));
-            if (currentQ.hasImage()) {
-                Question_TV.setText(currentQ.getQuestion());
-                imageQuestion.setVisibility(View.VISIBLE);
-                textQuestion.setVisibility(View.GONE);
-                ImageAnswer1.setImageResource(currentQ.getImageAnswer1());
-                ImageAnswer2.setImageResource(currentQ.getImageAnswer2());
-                ImageAnswer3.setImageResource(currentQ.getImageAnswer3());
-                qId++;
-            } else {
-                textQuestion.setVisibility(View.VISIBLE);
-                imageQuestion.setVisibility(View.GONE);
-                Question_TV.setText(currentQ.getQuestion());
-                Answer1_TV.setText(currentQ.getAnswer1());
-                Answer2_TV.setText(currentQ.getAnswer2());
-                Answer3_TV.setText(currentQ.getAnswer3());
-                qId++;
-            }
+
+        innerContainer.setBackgroundColor(getResources().getColor(R.color.containerColour));
+        if (currentQ.hasImage()) {
+            Question_TV.setText(currentQ.getQuestion());
+            imageQuestion.setVisibility(View.VISIBLE);
+            textQuestion.setVisibility(View.GONE);
+            ImageAnswer1.setImageResource(currentQ.getImageAnswer1());
+            ImageAnswer2.setImageResource(currentQ.getImageAnswer2());
+            ImageAnswer3.setImageResource(currentQ.getImageAnswer3());
+            qId++;
+        } else {
+            textQuestion.setVisibility(View.VISIBLE);
+            imageQuestion.setVisibility(View.GONE);
+            Question_TV.setText(currentQ.getQuestion());
+            Answer1_TV.setText(currentQ.getAnswer1());
+            Answer2_TV.setText(currentQ.getAnswer2());
+            Answer3_TV.setText(currentQ.getAnswer3());
+            qId++;
         }
-
-
+    }
 
 
     private View.OnClickListener answerListener = new View.OnClickListener() {
@@ -162,17 +197,46 @@ public class NationsActivity extends AppCompatActivity {
         if (currentQ.getCorrectanswer().equals(answer)) {
             score++;
             if (soundOff == 0) {
-                MediaPlayer mp = MediaPlayer.create(this, R.raw.right);
-                mp.start();
-            }
-            innerContainer.setBackgroundColor(getResources().getColor(R.color.correctColour));
+                // Release the media player if it currently exists because we are about to
+                // play a different sound file
+                releaseMediaPlayer();
 
-        } else {
-            if (soundOff == 0) {
-                MediaPlayer mp = MediaPlayer.create(this, R.raw.wrong);
-                mp.start();
+                // Request audio focus so in order to play the audio file. The app needs to play a
+                // short audio file, so we will request audio focus with a short amount of time
+                // with AUDIOFOCUS_GAIN_TRANSIENT.
+                int result = mAudioManager.requestAudioFocus(mOnAudioFocusChangeListener,
+                        AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT);
+
+                if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+                    MediaPlayer mp = MediaPlayer.create(this, R.raw.right);
+                    mp.start();
+                    // Setup a listener on the media player, so that we can stop and release the
+                    // media player once the sound has finished playing.
+                    mp.setOnCompletionListener(mCompletionListener);
+                }
+                innerContainer.setBackgroundColor(getResources().getColor(R.color.correctColour));
+
             }
-            innerContainer.setBackgroundColor(Color.RED);
+        } else if (!currentQ.getCorrectanswer().equals(answer)) {
+            if (soundOff == 0) {
+                // Release the media player if it currently exists because we are about to
+                // play a different sound file
+                releaseMediaPlayer();
+
+                // Request audio focus so in order to play the audio file. The app needs to play a
+                // short audio file, so we will request audio focus with a short amount of time
+                // with AUDIOFOCUS_GAIN_TRANSIENT.
+                int result = mAudioManager.requestAudioFocus(mOnAudioFocusChangeListener,
+                        AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT);
+
+                if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+
+                    MediaPlayer mp = MediaPlayer.create(this, R.raw.wrong);
+                    mp.start();
+                    mp.setOnCompletionListener(mCompletionListener);
+                }
+            }
+            innerContainer.setBackgroundColor(getResources().getColor(R.color.wrongColour));
 
 
         }
@@ -205,15 +269,44 @@ public class NationsActivity extends AppCompatActivity {
         if (currentQ.getImageCorrect() == (answer)) {
             score++;
             if (soundOff == 0) {
-                MediaPlayer mp = MediaPlayer.create(this, R.raw.right);
-                mp.start();
-            }
-            innerContainer.setBackgroundColor(getResources().getColor(R.color.correctColour));
+                // Release the media player if it currently exists because we are about to
+                // play a different sound file
+                releaseMediaPlayer();
 
-        } else {
+                // Request audio focus so in order to play the audio file. The app needs to play a
+                // short audio file, so we will request audio focus with a short amount of time
+                // with AUDIOFOCUS_GAIN_TRANSIENT.
+                int result = mAudioManager.requestAudioFocus(mOnAudioFocusChangeListener,
+                        AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT);
+
+                if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+                    MediaPlayer mp = MediaPlayer.create(this, R.raw.right);
+                    mp.start();
+                    // Setup a listener on the media player, so that we can stop and release the
+                    // media player once the sound has finished playing.
+                    mp.setOnCompletionListener(mCompletionListener);
+                }
+                innerContainer.setBackgroundColor(getResources().getColor(R.color.correctColour));
+
+            }
+        } else if (currentQ.getImageCorrect() != (answer)) {
             if (soundOff == 0) {
-                MediaPlayer mp = MediaPlayer.create(this, R.raw.wrong);
-                mp.start();
+                // Release the media player if it currently exists because we are about to
+                // play a different sound file
+                releaseMediaPlayer();
+
+                // Request audio focus so in order to play the audio file. The app needs to play a
+                // short audio file, so we will request audio focus with a short amount of time
+                // with AUDIOFOCUS_GAIN_TRANSIENT.
+                int result = mAudioManager.requestAudioFocus(mOnAudioFocusChangeListener,
+                        AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT);
+
+                if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+
+                    MediaPlayer mp = MediaPlayer.create(this, R.raw.wrong);
+                    mp.start();
+                    mp.setOnCompletionListener(mCompletionListener);
+                }
             }
             innerContainer.setBackgroundColor(getResources().getColor(R.color.wrongColour));
 
@@ -226,7 +319,7 @@ public class NationsActivity extends AppCompatActivity {
                 } else {
                     Intent intent = new Intent(NationsActivity.this, ResultActivity.class);
                     Bundle b = new Bundle();
-                    score = ((score/questionsCount)*100);
+                    score = ((score / questionsCount) * 100);
                     b.putFloat("score", score); //Your score
                     intent.putExtras(b); //Put your score to your next Intent
                     startActivity(intent);
@@ -241,6 +334,7 @@ public class NationsActivity extends AppCompatActivity {
 
 
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -270,5 +364,104 @@ public class NationsActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // When the activity is stopped, release the media player resources because we won't
+        // be playing any more sounds.
+        releaseMediaPlayer();
+    }
+
+    /**
+     * Clean up the media player by releasing its resources.
+     */
+    private void releaseMediaPlayer() {
+        // If the media player is not null, then it may be currently playing a sound.
+        if (mp != null) {
+            // Regardless of the current state of the media player, release its resources
+            // because we no longer need it.
+            mp.release();
+
+            // Set the media player back to null. For our code, we've decided that
+            // setting the media player to null is an easy way to tell that the media player
+            // is not configured to play an audio file at the moment.
+            mp = null;
+
+            // Regardless of whether or not we were granted audio focus, abandon it. This also
+            // unregisters the AudioFocusChangeListener so we don't get anymore callbacks.
+            mAudioManager.abandonAudioFocus(mOnAudioFocusChangeListener);
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();  // Always call the superclass method first
+        String timeLeftString = Timer_TV.getText().toString();
+        String[] separated = timeLeftString.split(":");
+        separated[1] = separated[1].trim();
+        timeLeft = Integer.parseInt(separated[1]);
+        timer.cancel();
+        timer = null;
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putInt("timeLeftSave", timeLeft);
+        editor.commit();
+
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        timeLeft = sharedPref.getInt("timeLeftSave", timeLeft);
+        updateTimer(timeLeft);
+    }
+
+    private void updateTimer(int timeLeft) {
+        if (timeLeft == 0) {
+            timer = new CountDownTimer((questionsCount * 6) * 1000 + 1000, 1000) {
+
+                public void onTick(long millisUntilFinished) {
+                    int seconds = (int) (millisUntilFinished / 1000);
+                    Timer_TV.setText("TIME : " + String.format("%02d", seconds));
+
+                }
+
+                public void onFinish() {
+                    Intent intent = new Intent(NationsActivity.this, ResultActivity.class);
+                    Bundle b = new Bundle();
+                    score = ((score / questionsCount) * 100);
+                    b.putFloat("score", score); //Your score
+                    intent.putExtras(b); //Put your score to your next Intent
+                    startActivity(intent);
+                    finish();
+                }
+            }.start();
+        } else {
+            timer = new CountDownTimer(timeLeft * 1000 + 1000, 1000) {
+
+                public void onTick(long millisUntilFinished) {
+                    int seconds = (int) (millisUntilFinished / 1000);
+                    Timer_TV.setText("TIME : " + String.format("%02d", seconds));
+
+                }
+
+                public void onFinish() {
+                    Intent intent = new Intent(NationsActivity.this, ResultActivity.class);
+                    Bundle b = new Bundle();
+                    score = ((score / questionsCount) * 100);
+                    b.putFloat("score", score); //Your score
+                    intent.putExtras(b); //Put your score to your next Intent
+                    startActivity(intent);
+                    finish();
+                }
+            }.start();
+
+        }
     }
 }
