@@ -1,6 +1,7 @@
 package com.ctingcter.chefquizlist;
 
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.CountDownTimer;
@@ -28,7 +29,8 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     List<Question> questionList;
     float score;
-    int qId;
+    int qId, mBackgroundIndex;
+    private TypedArray mBackgrounds;
     int questionsCount;
     Question currentQ;
     ImageView ImageAnswer1, ImageAnswer2, ImageAnswer3;
@@ -36,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     RelativeLayout container;
     LinearLayout textQuestion, imageQuestion, innerContainer;
     FirebaseAuth mFirebaseAuth;
-    Boolean soundOff = false;
+    int soundOff;
 
 
 
@@ -66,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         questions.add(new Question(17, "Which of these restaurants is NOT owned by Heston Blumenthal?", "The Crowne", "The Owls Head", "The Perfectionists Cafe", "The Owls Head", "chefs"));
         questions.add(new Question(18, "Which of these fish is halibut?", R.drawable.lemonsole, R.drawable.halibut, R.drawable.turbot, R.drawable.halibut, 0, "foods"));
         questions.add(new Question(19, "Which of these chefs doesn't have a restaurant in Manchester?", R.drawable.clifford, R.drawable.byrne, R.drawable.reid, R.drawable.clifford, 0, "chefs"));
-        
+
 
 
         questionList = questions;
@@ -128,8 +130,15 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void setQuestionView() {
+      //  mBackgrounds = this.getResources().obtainTypedArray(R.array.backgrounds);
 
-         innerContainer.setBackgroundColor(getResources().getColor(R.color.containerColour));
+//         mBackgroundIndex++;
+//         if (mBackgroundIndex >= mBackgrounds.length()) {
+//            mBackgroundIndex = 0;
+//        }
+//        container.setBackgroundResource(mBackgrounds.getResourceId(mBackgroundIndex, 0));
+
+        innerContainer.setBackgroundColor(getResources().getColor(R.color.containerColour));
             if (currentQ.hasImage()) {
                 Question_TV.setText(currentQ.getQuestion());
                 imageQuestion.setVisibility(View.VISIBLE);
@@ -182,17 +191,17 @@ public class MainActivity extends AppCompatActivity {
 
         if (currentQ.getCorrectanswer().equals(answer)) {
             score++;
-            if (soundOff = false) {
+            if (soundOff == 0) {
                 MediaPlayer mp = MediaPlayer.create(this, R.raw.right);
                 mp.start();
             }
             innerContainer.setBackgroundColor(getResources().getColor(R.color.correctColour));
 
         } else if (!currentQ.getCorrectanswer().equals(answer)) {
-            if (soundOff = false) {
+            if (soundOff == 0) {
                 MediaPlayer mp = MediaPlayer.create(this, R.raw.wrong);
                 mp.start();
-            }
+           }
             innerContainer.setBackgroundColor(getResources().getColor(R.color.wrongColour));
 
 
@@ -225,14 +234,14 @@ public class MainActivity extends AppCompatActivity {
 
         if (currentQ.getImageCorrect() == (answer)) {
             score++;
-            if (soundOff = false) {
+            if (soundOff == 0) {
                 MediaPlayer mp = MediaPlayer.create(this, R.raw.right);
                 mp.start();
             }
             innerContainer.setBackgroundColor(getResources().getColor(R.color.correctColour));
 
         } else {
-            if (soundOff = false) {
+            if (soundOff == 0) {
                 MediaPlayer mp = MediaPlayer.create(this, R.raw.wrong);
                 mp.start();
             }
@@ -284,11 +293,11 @@ public class MainActivity extends AppCompatActivity {
             mFirebaseAuth.signOut();
             loadLogInView();
         }
-        if (id == R.id.action_soundOff){
-            if (soundOff = false) {
-                soundOff = true;
-            } else {
-                soundOff = false;
+        if (id == R.id.action_soundOff) {
+            if (soundOff == 0) {
+                soundOff = 1;
+            } else if (soundOff == 1) {
+                soundOff = 0;
             }
         }
 

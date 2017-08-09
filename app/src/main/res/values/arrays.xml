@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer-array name="backgrounds">
+        <item>@drawable/tuna</item>
+        <item>@drawable/meringue</item>
+        <item>@drawable/crab</item>
+        <item>@drawable/mack</item>
+    </integer-array>
+</resources>

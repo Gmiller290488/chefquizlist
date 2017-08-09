@@ -35,7 +35,7 @@ public class ChefsActivity extends AppCompatActivity {
         RelativeLayout container;
         LinearLayout textQuestion, imageQuestion, innerContainer;
         FirebaseAuth mFirebaseAuth;
-        Boolean soundOff = false;
+     int soundOff;
 
     /* Need to implement a way to check which category was selected and thus which questions to show */
 
@@ -170,14 +170,14 @@ public class ChefsActivity extends AppCompatActivity {
 
             if (currentQ.getCorrectanswer().equals(answer)) {
                 score++;
-                if (soundOff = false) {
+                if (soundOff == 0) {
                     MediaPlayer mp = MediaPlayer.create(this, R.raw.right);
                     mp.start();
                 }
                 innerContainer.setBackgroundColor(getResources().getColor(R.color.correctColour));
 
             } else {
-                if (soundOff = false) {
+                if (soundOff == 0) {
                     MediaPlayer mp = MediaPlayer.create(this, R.raw.wrong);
                     mp.start();
                 }
@@ -213,14 +213,14 @@ public class ChefsActivity extends AppCompatActivity {
 
             if (currentQ.getImageCorrect() == (answer)) {
                 score++;
-                if (soundOff = false) {
+                if (soundOff == 0) {
                     MediaPlayer mp = MediaPlayer.create(this, R.raw.right);
                     mp.start();
                 }
                 innerContainer.setBackgroundColor(getResources().getColor(R.color.correctColour));
 
             } else {
-                if (soundOff = false) {
+                if (soundOff == 0) {
                     MediaPlayer mp = MediaPlayer.create(this, R.raw.wrong);
                     mp.start();
                 }
@@ -270,11 +270,11 @@ public class ChefsActivity extends AppCompatActivity {
                 mFirebaseAuth.signOut();
                 loadLogInView();
             }
-            if (id == R.id.action_soundOff){
-                if (soundOff = false) {
-                    soundOff = true;
-                } else {
-                    soundOff = false;
+            if (id == R.id.action_soundOff) {
+                if (soundOff == 0) {
+                    soundOff = 1;
+                } else if (soundOff == 1) {
+                    soundOff = 0;
                 }
             }
 
