@@ -23,6 +23,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.view.View.GONE;
+
 /**
  * Created by CTingCTer on 07/08/2017.
  */
@@ -34,11 +36,12 @@ public class ChefsActivity extends AppCompatActivity {
     int questionsCount;
     int soundOff;
     int timeLeft = 0;
+    int lives = 4;
     Question currentQ;
     ImageView ImageAnswer1, ImageAnswer2, ImageAnswer3;
-    TextView Question_TV, Answer1_TV, Answer2_TV, Answer3_TV, Name_TV, Timer_TV;
+    TextView Question_TV, Answer1_TV, Answer2_TV, Answer3_TV, Name_TV, Timer_TV, Lives1_TV, Lives2_TV, Lives3_TV;
     RelativeLayout container;
-    LinearLayout textQuestion, imageQuestion, innerContainer;
+    LinearLayout textQuestion, imageQuestion, innerContainer, LivesContainer;
     FirebaseAuth mFirebaseAuth;
     CountDownTimer timer;
 
@@ -127,6 +130,10 @@ public class ChefsActivity extends AppCompatActivity {
             Answer2_TV = (TextView) findViewById(R.id.Answer2_TV);
             Answer3_TV = (TextView) findViewById(R.id.Answer3_TV);
             Name_TV = (TextView) findViewById(R.id.name_TV);
+        LivesContainer = (LinearLayout) findViewById(R.id.LivesContainer);
+        Lives1_TV = (TextView) findViewById(R.id.Lives1_TV);
+        Lives2_TV = (TextView) findViewById(R.id.Lives2_TV);
+        Lives3_TV = (TextView) findViewById(R.id.Lives3_TV);
             container = (RelativeLayout) findViewById(R.id.container);
             innerContainer = (LinearLayout) findViewById(R.id.innerContainer);
             imageQuestion = (LinearLayout) findViewById(R.id.imageQuestion);
@@ -149,6 +156,25 @@ public class ChefsActivity extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+    }
+
+    private void checkLives(int lives) {
+        if (lives == 3) {
+            Lives3_TV.setVisibility(GONE);
+        } else if (lives == 2) {
+            Lives2_TV.setVisibility(GONE);
+        } else if (lives == 1) {
+            Lives1_TV.setVisibility(GONE);
+        }
+        if (lives == 0) {
+            Intent intent = new Intent(ChefsActivity.this, ResultActivity.class);
+            Bundle b = new Bundle();
+            score = ((score / questionsCount) * 100);
+            b.putFloat("score", score); //Your score
+            intent.putExtras(b); //Put your score to your next Intent
+            startActivity(intent);
+            finish();
+        }
     }
 
 
@@ -244,6 +270,8 @@ public class ChefsActivity extends AppCompatActivity {
                     MediaPlayer mp = MediaPlayer.create(this, R.raw.wrong);
                     mp.start();
                     mp.setOnCompletionListener(mCompletionListener);
+                    lives--;
+                    checkLives(lives);
                 }
             }
             innerContainer.setBackgroundColor(getResources().getColor(R.color.wrongColour));
@@ -316,6 +344,8 @@ public class ChefsActivity extends AppCompatActivity {
                     MediaPlayer mp = MediaPlayer.create(this, R.raw.wrong);
                     mp.start();
                     mp.setOnCompletionListener(mCompletionListener);
+                    lives--;
+                    checkLives(lives);
                 }
             }
             innerContainer.setBackgroundColor(getResources().getColor(R.color.wrongColour));

@@ -133,11 +133,11 @@ public class MainActivity extends AppCompatActivity {
         Answer1_TV = (TextView) findViewById(R.id.Answer1_TV);
         Answer2_TV = (TextView) findViewById(R.id.Answer2_TV);
         Answer3_TV = (TextView) findViewById(R.id.Answer3_TV);
+        LivesContainer = (LinearLayout) findViewById(R.id.LivesContainer);
         Lives1_TV = (TextView) findViewById(R.id.Lives1_TV);
         Lives2_TV = (TextView) findViewById(R.id.Lives2_TV);
         Lives3_TV = (TextView) findViewById(R.id.Lives3_TV);
         Name_TV = (TextView) findViewById(R.id.name_TV);
-        LivesContainer = (LinearLayout) findViewById(R.id.LivesContainer);
         container = (RelativeLayout) findViewById(R.id.container);
         innerContainer = (LinearLayout) findViewById(R.id.innerContainer);
         imageQuestion = (LinearLayout) findViewById(R.id.imageQuestion);
