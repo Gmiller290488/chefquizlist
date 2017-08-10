@@ -18,4 +18,13 @@
     <string name="sign_up_here">No account?  Create one!</string>
     <string name="password_repeat">Enter Password Again</string>
     <string name="signup_error_password">Passwords must match!</string>
+    <string name="choose_category">Choose your question category</string>
+    <string name="signin">Please Sign In</string>
+    <string name="sign_up">Sign up here!</string>
+    <string name="chefsquiz">The Ultimate Chefs Quiz</string>
+    <string name="gamemode">Choose a Game Mode</string>
+    <string name="againstclock">Against the clock</string>
+    <string name="threelives">3 lives</string>
+    <string name="both">Both</string>
+    <string name="freePlay">Free Play</string>
 </resources>

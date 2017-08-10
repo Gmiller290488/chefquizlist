@@ -5,12 +5,12 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label="@string/choose_category"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".QuizCategoryActivity"
+        <activity android:name=".GameModeActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -23,6 +23,7 @@
         <activity
             android:name=".SignInActivity"
             android:theme="@style/AppTheme"
+            android:label="@string/signin"
             android:parentActivityName=".QuizCategoryActivity" >
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
@@ -33,6 +34,7 @@
         <activity
             android:name=".SignUpActivity"
             android:theme="@style/AppTheme"
+            android:label="@string/sign_up"
             android:parentActivityName=".SignInActivity" >
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
@@ -53,6 +55,7 @@
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme"
+            android:label="@string/chefsquiz"
             android:screenOrientation="portrait"
             android:parentActivityName=".SignInActivity" >
             <!-- Parent activity meta-data to support 4.0 and lower -->
@@ -63,6 +66,7 @@
 
         <activity
             android:name=".ChefsActivity"
+            android:label="@string/chefsquiz"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:parentActivityName=".QuizCategoryActivity" >
@@ -73,6 +77,7 @@
         </activity>
 
         <activity
+            android:label="@string/chefsquiz"
             android:name="FoodsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
@@ -86,8 +91,21 @@
         <activity
             android:name="NationsActivity"
             android:screenOrientation="portrait"
+            android:label="@string/chefsquiz"
             android:theme="@style/AppTheme"
             android:parentActivityName=".QuizCategoryActivity" >
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+
+        <activity
+            android:name=".QuizCategoryActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/gamemode"
+            android:theme="@style/AppTheme"
+            android:parentActivityName=".GameModeActivity" >
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

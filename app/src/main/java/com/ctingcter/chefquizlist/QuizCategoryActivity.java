@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,13 +25,16 @@ public class QuizCategoryActivity extends AppCompatActivity {
     private FirebaseUser mFirebaseUser;
     private String mUserEmail;
     private String mName;
+    private String categoryChoice;
+    int gameMode;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
 
-               all_TV = (TextView) findViewById(R.id.all_TV);
+        all_TV = (TextView) findViewById(R.id.all_TV);
         chefs_TV = (TextView) findViewById(R.id.chefs_TV);
         nations_TV = (TextView) findViewById(R.id.nations_TV);
         foods_TV = (TextView) findViewById(R.id.foods_TV);
@@ -40,12 +44,9 @@ public class QuizCategoryActivity extends AppCompatActivity {
         nations_TV.setOnClickListener(categoryListener);
         foods_TV.setOnClickListener(categoryListener);
 
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         Bundle b = getIntent().getExtras();
-        if (mFirebaseUser == null && b == null) {
-            loadLogInView();
-        }
+        gameMode= b.getInt("gameMode");
+
 
 }
 
@@ -54,7 +55,11 @@ public class QuizCategoryActivity extends AppCompatActivity {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.all_TV:
+                    // Intent intent_all = new Intent(QuizCategoryActivity.this, MainActivity.class);
                     Intent intent_all = new Intent(QuizCategoryActivity.this, MainActivity.class);
+                    Bundle b = new Bundle();
+                    b.putInt("gameMode", gameMode); //Your score
+                    intent_all.putExtras(b); //Put your score to your next Intent
                     startActivity(intent_all);
                     break;
                 case R.id.chefs_TV:

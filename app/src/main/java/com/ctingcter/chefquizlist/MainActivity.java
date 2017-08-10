@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout textQuestion, imageQuestion, innerContainer, LivesContainer;
     FirebaseAuth mFirebaseAuth;
     CountDownTimer timer;
+
 
     /**
      * Handles playback of all the sound files
@@ -153,6 +155,10 @@ public class MainActivity extends AppCompatActivity {
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         setQuestionView();
+        Bundle b = getIntent().getExtras();
+        int gameMode = b.getInt("gameMode");
+        updateGameMode(gameMode);
+
     }
 
 
@@ -475,6 +481,18 @@ public class MainActivity extends AppCompatActivity {
        // SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         timeLeft = sharedPref.getInt("timeLeftSave", timeLeft);
         updateTimer(timeLeft);
+
+    }
+
+    private void updateGameMode(int gameMode) {
+
+        if (gameMode == 1) {
+            Toast.makeText(this, "gameMode is " + gameMode, Toast.LENGTH_SHORT).show();
+            lives = -1;
+            Lives1_TV.setVisibility(GONE);
+            Lives2_TV.setVisibility(GONE);
+            Lives3_TV.setVisibility(GONE);
+        }
     }
 
     private void updateTimer(int timeLeft) {
