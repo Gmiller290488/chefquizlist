@@ -3,11 +3,11 @@ package com.ctingcter.chefquizlist;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -36,7 +35,7 @@ public class ChefsActivity extends AppCompatActivity {
     int questionsCount;
     int soundOff;
     int timeLeft = 0;
-    int lives = 4;
+    int lives = 3;
     Question currentQ;
     ImageView ImageAnswer1, ImageAnswer2, ImageAnswer3;
     TextView Question_TV, Answer1_TV, Answer2_TV, Answer3_TV, Name_TV, Timer_TV, Lives1_TV, Lives2_TV, Lives3_TV;
@@ -118,37 +117,37 @@ public class ChefsActivity extends AppCompatActivity {
 
 
 
-            questionList = questions;
-            questionsCount = questions.size();
-            currentQ = questionList.get(qId);
-            Timer_TV = (TextView) findViewById(R.id.Timer_TV);
-            Question_TV = (TextView) findViewById(R.id.Question_TV);
-            ImageAnswer1 = (ImageView) findViewById(R.id.imageAnswer1);
-            ImageAnswer2 = (ImageView) findViewById(R.id.imageAnswer2);
-            ImageAnswer3 = (ImageView) findViewById(R.id.imageAnswer3);
-            Answer1_TV = (TextView) findViewById(R.id.Answer1_TV);
-            Answer2_TV = (TextView) findViewById(R.id.Answer2_TV);
-            Answer3_TV = (TextView) findViewById(R.id.Answer3_TV);
-            Name_TV = (TextView) findViewById(R.id.name_TV);
+        questionList = questions;
+        questionsCount = questions.size();
+        currentQ = questionList.get(qId);
+        Timer_TV = (TextView) findViewById(R.id.Timer_TV);
+        Question_TV = (TextView) findViewById(R.id.Question_TV);
+        ImageAnswer1 = (ImageView) findViewById(R.id.imageAnswer1);
+        ImageAnswer2 = (ImageView) findViewById(R.id.imageAnswer2);
+        ImageAnswer3 = (ImageView) findViewById(R.id.imageAnswer3);
+        Answer1_TV = (TextView) findViewById(R.id.Answer1_TV);
+        Answer2_TV = (TextView) findViewById(R.id.Answer2_TV);
+        Answer3_TV = (TextView) findViewById(R.id.Answer3_TV);
         LivesContainer = (LinearLayout) findViewById(R.id.LivesContainer);
         Lives1_TV = (TextView) findViewById(R.id.Lives1_TV);
         Lives2_TV = (TextView) findViewById(R.id.Lives2_TV);
         Lives3_TV = (TextView) findViewById(R.id.Lives3_TV);
-            container = (RelativeLayout) findViewById(R.id.container);
-            innerContainer = (LinearLayout) findViewById(R.id.innerContainer);
-            imageQuestion = (LinearLayout) findViewById(R.id.imageQuestion);
-            textQuestion = (LinearLayout) findViewById(R.id.textQuestion);
-            Answer1_TV.setOnClickListener(answerListener);
-            Answer2_TV.setOnClickListener(answerListener);
-            Answer3_TV.setOnClickListener(answerListener);
-            ImageAnswer1.setOnClickListener(answerListener);
-            ImageAnswer2.setOnClickListener(answerListener);
-            ImageAnswer3.setOnClickListener(answerListener);
+        Name_TV = (TextView) findViewById(R.id.name_TV);
+        container = (RelativeLayout) findViewById(R.id.container);
+        innerContainer = (LinearLayout) findViewById(R.id.innerContainer);
+        imageQuestion = (LinearLayout) findViewById(R.id.imageQuestion);
+        textQuestion = (LinearLayout) findViewById(R.id.textQuestion);
+        Answer1_TV.setOnClickListener(answerListener);
+        Answer2_TV.setOnClickListener(answerListener);
+        Answer3_TV.setOnClickListener(answerListener);
+        ImageAnswer1.setOnClickListener(answerListener);
+        ImageAnswer2.setOnClickListener(answerListener);
+        ImageAnswer3.setOnClickListener(answerListener);
 
 
-            mFirebaseAuth = FirebaseAuth.getInstance();
-            setQuestionView();
-        }
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        setQuestionView();
+    }
 
 
     private void loadLogInView() {
@@ -156,25 +155,6 @@ public class ChefsActivity extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
-    }
-
-    private void checkLives(int lives) {
-        if (lives == 3) {
-            Lives3_TV.setVisibility(GONE);
-        } else if (lives == 2) {
-            Lives2_TV.setVisibility(GONE);
-        } else if (lives == 1) {
-            Lives1_TV.setVisibility(GONE);
-        }
-        if (lives == 0) {
-            Intent intent = new Intent(ChefsActivity.this, ResultActivity.class);
-            Bundle b = new Bundle();
-            score = ((score / questionsCount) * 100);
-            b.putFloat("score", score); //Your score
-            intent.putExtras(b); //Put your score to your next Intent
-            startActivity(intent);
-            finish();
-        }
     }
 
 
@@ -185,14 +165,14 @@ public class ChefsActivity extends AppCompatActivity {
         if (currentQ.hasImage()) {
             Question_TV.setText(currentQ.getQuestion());
             imageQuestion.setVisibility(View.VISIBLE);
-            textQuestion.setVisibility(View.GONE);
+            textQuestion.setVisibility(GONE);
             ImageAnswer1.setImageResource(currentQ.getImageAnswer1());
             ImageAnswer2.setImageResource(currentQ.getImageAnswer2());
             ImageAnswer3.setImageResource(currentQ.getImageAnswer3());
             qId++;
         } else {
             textQuestion.setVisibility(View.VISIBLE);
-            imageQuestion.setVisibility(View.GONE);
+            imageQuestion.setVisibility(GONE);
             Question_TV.setText(currentQ.getQuestion());
             Answer1_TV.setText(currentQ.getAnswer1());
             Answer2_TV.setText(currentQ.getAnswer2());
@@ -250,7 +230,7 @@ public class ChefsActivity extends AppCompatActivity {
                     // media player once the sound has finished playing.
                     mp.setOnCompletionListener(mCompletionListener);
                 }
-                innerContainer.setBackgroundColor(getResources().getColor(R.color.correctColour));
+                innerContainer.setBackgroundResource(R.drawable.customborder_correct);
 
             }
         } else if (!currentQ.getCorrectanswer().equals(answer)) {
@@ -268,13 +248,13 @@ public class ChefsActivity extends AppCompatActivity {
                 if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
 
                     MediaPlayer mp = MediaPlayer.create(this, R.raw.wrong);
-                    mp.start();
-                    mp.setOnCompletionListener(mCompletionListener);
                     lives--;
                     checkLives(lives);
+                    mp.start();
+                    mp.setOnCompletionListener(mCompletionListener);
                 }
             }
-            innerContainer.setBackgroundColor(getResources().getColor(R.color.wrongColour));
+            innerContainer.setBackgroundResource(R.drawable.customborder_wrong);
 
 
         }
@@ -324,8 +304,7 @@ public class ChefsActivity extends AppCompatActivity {
                     // media player once the sound has finished playing.
                     mp.setOnCompletionListener(mCompletionListener);
                 }
-                innerContainer.setBackgroundColor(getResources().getColor(R.color.correctColour));
-
+                innerContainer.setBackgroundResource(R.drawable.customborder_correct);
             }
         } else if (currentQ.getImageCorrect() != (answer)) {
             if (soundOff == 0) {
@@ -348,7 +327,7 @@ public class ChefsActivity extends AppCompatActivity {
                     checkLives(lives);
                 }
             }
-            innerContainer.setBackgroundColor(getResources().getColor(R.color.wrongColour));
+            innerContainer.setBackgroundResource(R.drawable.customborder_wrong);
 
         }
         new CountDownTimer(2000, 1000) {
@@ -373,6 +352,25 @@ public class ChefsActivity extends AppCompatActivity {
         }.start();
 
 
+    }
+
+    private void checkLives(int lives) {
+        if (lives == 3) {
+            Lives3_TV.setVisibility(GONE);
+        } else if (lives == 2) {
+            Lives2_TV.setVisibility(GONE);
+        } else if (lives == 1) {
+            Lives1_TV.setVisibility(GONE);
+        }
+        if (lives == 0) {
+            Intent intent = new Intent(ChefsActivity.this, ResultActivity.class);
+            Bundle b = new Bundle();
+            score = ((score / questionsCount) * 100);
+            b.putFloat("score", score); //Your score
+            intent.putExtras(b); //Put your score to your next Intent
+            startActivity(intent);
+            finish();
+        }
     }
 
 
@@ -445,7 +443,7 @@ public class ChefsActivity extends AppCompatActivity {
         timeLeft = Integer.parseInt(separated[1]);
         timer.cancel();
         timer = null;
-        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putInt("timeLeftSave", timeLeft);
         editor.commit();
@@ -456,8 +454,8 @@ public class ChefsActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-
-        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        // SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         timeLeft = sharedPref.getInt("timeLeftSave", timeLeft);
         updateTimer(timeLeft);
     }

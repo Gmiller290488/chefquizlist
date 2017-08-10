@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.CountDownTimer;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -235,7 +236,7 @@ public class MainActivity extends AppCompatActivity {
                     // media player once the sound has finished playing.
                     mp.setOnCompletionListener(mCompletionListener);
                 }
-                innerContainer.setBackgroundColor(getResources().getColor(R.color.correctColour));
+                innerContainer.setBackgroundResource(R.drawable.customborder_correct);
 
             }
         } else if (!currentQ.getCorrectanswer().equals(answer)) {
@@ -259,7 +260,7 @@ public class MainActivity extends AppCompatActivity {
                     mp.setOnCompletionListener(mCompletionListener);
                 }
             }
-            innerContainer.setBackgroundColor(getResources().getColor(R.color.wrongColour));
+            innerContainer.setBackgroundResource(R.drawable.customborder_wrong);
 
 
         }
@@ -309,8 +310,7 @@ public class MainActivity extends AppCompatActivity {
                     // media player once the sound has finished playing.
                     mp.setOnCompletionListener(mCompletionListener);
                 }
-                innerContainer.setBackgroundColor(getResources().getColor(R.color.correctColour));
-
+                innerContainer.setBackgroundResource(R.drawable.customborder_correct);
             }
         } else if (currentQ.getImageCorrect() != (answer)) {
             if (soundOff == 0) {
@@ -333,7 +333,7 @@ public class MainActivity extends AppCompatActivity {
                     checkLives(lives);
                 }
             }
-            innerContainer.setBackgroundColor(getResources().getColor(R.color.wrongColour));
+            innerContainer.setBackgroundResource(R.drawable.customborder_wrong);
 
         }
         new CountDownTimer(2000, 1000) {
@@ -449,7 +449,7 @@ public class MainActivity extends AppCompatActivity {
         timeLeft = Integer.parseInt(separated[1]);
         timer.cancel();
         timer = null;
-        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putInt("timeLeftSave", timeLeft);
         editor.commit();
@@ -460,8 +460,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-
-        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+       // SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         timeLeft = sharedPref.getInt("timeLeftSave", timeLeft);
         updateTimer(timeLeft);
     }
@@ -509,4 +509,3 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 }
-

@@ -1,7 +1,9 @@
 package com.ctingcter.chefquizlist;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,8 +30,7 @@ public class QuizCategoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
 
-
-        all_TV = (TextView) findViewById(R.id.all_TV);
+               all_TV = (TextView) findViewById(R.id.all_TV);
         chefs_TV = (TextView) findViewById(R.id.chefs_TV);
         nations_TV = (TextView) findViewById(R.id.nations_TV);
         foods_TV = (TextView) findViewById(R.id.foods_TV);
@@ -79,6 +80,15 @@ public class QuizCategoryActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        // SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putInt("timeLeftSave", 0);
+        editor.commit();
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
