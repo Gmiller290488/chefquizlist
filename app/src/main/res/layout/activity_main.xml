@@ -38,7 +38,8 @@
                 android:layout_alignBottom="@+id/name_TV"
                                 android:gravity="center"
                 android:padding="20dp"
-                android:text="Question" />
+                android:text="Question"
+                android:background="@drawable/customborder"/>
         </LinearLayout>
 
         <LinearLayout
@@ -53,7 +54,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:background="#C0C0C0"
+                android:background="@drawable/customborder_question"
                 android:gravity="center"
                 android:padding="10dp"
                 android:text="Answer1" />
@@ -63,7 +64,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:background="#C0C0C0"
+                android:background="@drawable/customborder_question"
                 android:gravity="center"
                 android:padding="10dp"
                 android:text="Answer2" />
@@ -73,7 +74,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:background="#C0C0C0"
+                android:background="@drawable/customborder_question"
                 android:gravity="center"
                 android:padding="10dp"
                 android:text="Answer3" />
@@ -90,17 +91,20 @@
 
             <ImageView
                 android:id="@+id/imageAnswer1"
+                android:background="@drawable/customborder_question"
                 android:layout_width="90dp"
                 android:layout_height="90dp"
                 android:layout_gravity="center" />
 
             <ImageView
+                android:background="@drawable/customborder_question"
                 android:id="@+id/imageAnswer2"
                 android:layout_width="90dp"
                 android:layout_height="90dp"
                 android:layout_gravity="center" />
 
             <ImageView
+                android:background="@drawable/customborder_question"
                 android:id="@+id/imageAnswer3"
                 android:layout_width="90dp"
                 android:layout_height="90dp"

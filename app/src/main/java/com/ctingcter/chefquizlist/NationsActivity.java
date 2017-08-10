@@ -152,7 +152,12 @@ public class NationsActivity extends AppCompatActivity {
 
     private void setQuestionView() {
 
-
+        Answer1_TV.setBackgroundResource(R.drawable.customborder);
+        Answer2_TV.setBackgroundResource(R.drawable.customborder);
+        Answer3_TV.setBackgroundResource(R.drawable.customborder);
+        ImageAnswer1.setBackgroundResource(R.drawable.customborder);
+        ImageAnswer2.setBackgroundResource(R.drawable.customborder);
+        ImageAnswer3.setBackgroundResource(R.drawable.customborder);
         innerContainer.setBackgroundColor(getResources().getColor(R.color.containerColour));
         if (currentQ.hasImage()) {
             Question_TV.setText(currentQ.getQuestion());
@@ -179,28 +184,29 @@ public class NationsActivity extends AppCompatActivity {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.Answer1_TV:
-                    checkAnswer(currentQ.getAnswer1());
+                    checkAnswer(currentQ.getAnswer1(), Answer1_TV);
                     break;
                 case R.id.Answer2_TV:
-                    checkAnswer(currentQ.getAnswer2());
+                    checkAnswer(currentQ.getAnswer2(), Answer2_TV);
                     break;
                 case R.id.Answer3_TV:
-                    checkAnswer(currentQ.getAnswer3());
+                    checkAnswer(currentQ.getAnswer3(), Answer3_TV);
                     break;
                 case R.id.imageAnswer1:
-                    checkImageAnswer(currentQ.getImageAnswer1());
+                    checkImageAnswer(currentQ.getImageAnswer1(), ImageAnswer1);
                     break;
                 case R.id.imageAnswer2:
-                    checkImageAnswer(currentQ.getImageAnswer2());
+                    checkImageAnswer(currentQ.getImageAnswer2(), ImageAnswer2);
                     break;
                 case R.id.imageAnswer3:
-                    checkImageAnswer(currentQ.getImageAnswer3());
+                    checkImageAnswer(currentQ.getImageAnswer3(), ImageAnswer3);
                     break;
             }
         }
     };
 
-    public void checkAnswer(String answer) {
+
+    public void checkAnswer(String answer, TextView tv) {
 
         if (currentQ.getCorrectanswer().equals(answer)) {
             score++;
@@ -222,6 +228,7 @@ public class NationsActivity extends AppCompatActivity {
                     // media player once the sound has finished playing.
                     mp.setOnCompletionListener(mCompletionListener);
                 }
+                tv.setBackgroundResource(R.drawable.customborder_correct_ans);
                 innerContainer.setBackgroundResource(R.drawable.customborder_correct);
 
             }
@@ -247,6 +254,7 @@ public class NationsActivity extends AppCompatActivity {
                 }
             }
             innerContainer.setBackgroundResource(R.drawable.customborder_wrong);
+            tv.setBackgroundResource(R.drawable.customborder_wrong_ans);
 
 
         }
@@ -274,7 +282,7 @@ public class NationsActivity extends AppCompatActivity {
     }
 
 
-    public void checkImageAnswer(int answer) {
+    public void checkImageAnswer(int answer, ImageView iv) {
 
         if (currentQ.getImageCorrect() == (answer)) {
             score++;
@@ -297,6 +305,8 @@ public class NationsActivity extends AppCompatActivity {
                     mp.setOnCompletionListener(mCompletionListener);
                 }
                 innerContainer.setBackgroundResource(R.drawable.customborder_correct);
+                iv.setBackgroundResource(R.drawable.customborder_correct_ans);
+
             }
         } else if (currentQ.getImageCorrect() != (answer)) {
             if (soundOff == 0) {
@@ -320,6 +330,7 @@ public class NationsActivity extends AppCompatActivity {
                 }
             }
             innerContainer.setBackgroundResource(R.drawable.customborder_wrong);
+            iv.setBackgroundResource(R.drawable.customborder_wrong_ans);
 
         }
         new CountDownTimer(2000, 1000) {
