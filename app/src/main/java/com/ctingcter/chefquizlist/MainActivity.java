@@ -28,6 +28,7 @@ import static android.view.View.GONE;
 
 public class MainActivity extends AppCompatActivity {
     List<Question> questionList;
+    int timeOn = 0;
     float score;
     int qId;
     int questionsCount;
@@ -155,9 +156,7 @@ public class MainActivity extends AppCompatActivity {
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         setQuestionView();
-        Bundle b = getIntent().getExtras();
-        int gameMode = b.getInt("gameMode");
-        updateGameMode(gameMode);
+
 
     }
 
@@ -460,16 +459,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onPause() {
         super.onPause();  // Always call the superclass method first
-        String timeLeftString = Timer_TV.getText().toString();
-        String[] separated = timeLeftString.split(":");
-        separated[1] = separated[1].trim();
-        timeLeft = Integer.parseInt(separated[1]);
-        timer.cancel();
-        timer = null;
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putInt("timeLeftSave", timeLeft);
-        editor.commit();
+        if (timeOn == 1) {
+            String timeLeftString = Timer_TV.getText().toString();
+            String[] separated = timeLeftString.split(":");
+            separated[1] = separated[1].trim();
+            timeLeft = Integer.parseInt(separated[1]);
+            timer.cancel();
+            timer = null;
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putInt("timeLeftSave", timeLeft);
+            editor.commit();
+        }
+        releaseMediaPlayer();
 
 
     }
@@ -481,17 +483,35 @@ public class MainActivity extends AppCompatActivity {
        // SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         timeLeft = sharedPref.getInt("timeLeftSave", timeLeft);
         updateTimer(timeLeft);
+        Bundle b = getIntent().getExtras();
+        int gameMode = b.getInt("gameMode");
+        updateGameMode(gameMode);
 
     }
 
     private void updateGameMode(int gameMode) {
 
         if (gameMode == 1) {
+            timeOn = 1;
             Toast.makeText(this, "gameMode is " + gameMode, Toast.LENGTH_SHORT).show();
             lives = -1;
             Lives1_TV.setVisibility(GONE);
             Lives2_TV.setVisibility(GONE);
             Lives3_TV.setVisibility(GONE);
+        } else if (gameMode == 2) {
+            timeOn = 0;
+            timer.cancel();
+            timer = null;
+        } else if (gameMode == 4) {
+            timeOn = 0;
+            lives = -1;
+            Lives1_TV.setVisibility(GONE);
+            Lives2_TV.setVisibility(GONE);
+            Lives3_TV.setVisibility(GONE);
+            timer.cancel();
+            timer = null;
+        } else {
+            timeOn = 1;
         }
     }
 
@@ -515,7 +535,7 @@ public class MainActivity extends AppCompatActivity {
                     finish();
                 }
             }.start();
-        } else {
+        } else if (timeLeft != 0) {
             timer = new CountDownTimer(timeLeft * 1000 + 1000, 1000) {
 
                 public void onTick(long millisUntilFinished) {

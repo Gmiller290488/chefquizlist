@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,8 +17,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,19 +33,23 @@ import static android.view.View.GONE;
 
 public class ChefsActivity extends AppCompatActivity {
     List<Question> questionList;
+    int timeOn = 0;
     float score;
     int qId;
     int questionsCount;
     int soundOff;
     int timeLeft = 0;
     int lives = 3;
+    int gameMode;
     Question currentQ;
     ImageView ImageAnswer1, ImageAnswer2, ImageAnswer3;
     TextView Question_TV, Answer1_TV, Answer2_TV, Answer3_TV, Name_TV, Timer_TV, Lives1_TV, Lives2_TV, Lives3_TV;
     RelativeLayout container;
     LinearLayout textQuestion, imageQuestion, innerContainer, LivesContainer;
     FirebaseAuth mFirebaseAuth;
+    FirebaseUser mFirebaseUser;
     CountDownTimer timer;
+
 
     /**
      * Handles playback of all the sound files
@@ -103,18 +110,18 @@ public class ChefsActivity extends AppCompatActivity {
         // Create and setup the {@link AudioManager} to request audio focus
         mAudioManager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
 
-            ArrayList<Question> questions = new ArrayList<Question>();
-            questions.add(new Question(1, "Which chef owns The Fat Duck?", "Heston Blumenthal", "Gordon Ramsay", "Donald Duck", "Heston Blumenthal", "chefs"));
-            questions.add(new Question(2, "Which of these is Ferran Adria?", R.drawable.ferran, R.drawable.ramsay, R.drawable.rene, R.drawable.ferran, 0, "chefs"));
-            questions.add(new Question(3, "Which chef owns D.O.M in Sao Paulo?", "Virgilio Martínez Véliz", "Joan Roca", "Alex Atala", "Alex Atala", "chefs"));
-            questions.add(new Question(4, "Which of these chefs is Albert Roux?", R.drawable.michelrouxjnr, R.drawable.albert, R.drawable.michel, R.drawable.albert, 0, "chefs"));
-            questions.add(new Question(5, "Which of these chefs have the most michelin stars? (2017)", R.drawable.robuchon, R.drawable.keller, R.drawable.ducasse, R.drawable.robuchon, 0, "chefs"));
-            questions.add(new Question(6, "Which chef has two establishments in Marlow?", "Heston Blumenthal", "Natahan Outlaw", "Tom Kerridge", "Tom Kerridge", "chefs"));
-            questions.add(new Question(7, "Which legendary chef owned 3 michelin starred \"La Tante Claire\"?", "Marco Pierre White", "Pierre Koffman", "Nico Ladenis", "Pierre Koffman", "chefs"));
-            questions.add(new Question(8, "Which of these restaurants is NOT owned by Heston Blumenthal?", "The Crowne", "The Owls Head", "The Perfectionists Cafe", "The Owls Head", "chefs"));
-            questions.add(new Question(9, "Which of these chefs doesn't have a restaurant in Manchester?", R.drawable.clifford, R.drawable.byrne, R.drawable.reid, R.drawable.clifford, 0 ,"chefs"));
-            questions.add(new Question(10, "Which chef owns \"64 degrees\"?", "Tommy Banks", "Michael Bremner", "Simon Hulstone", "Simon Hulstone", "chefs"));
 
+        ArrayList<Question> questions = new ArrayList<Question>();
+        questions.add(new Question(1, "Which chef owns The Fat Duck?", "Heston Blumenthal", "Gordon Ramsay", "Donald Duck", "Heston Blumenthal", "chefs"));
+        questions.add(new Question(2, "Which of these is Ferran Adria?", R.drawable.ferran, R.drawable.ramsay, R.drawable.rene, R.drawable.ferran, 0, "chefs"));
+        questions.add(new Question(3, "Which chef owns D.O.M in Sao Paulo?", "Virgilio Martínez Véliz", "Joan Roca", "Alex Atala", "Alex Atala", "chefs"));
+        questions.add(new Question(4, "Which of these chefs is Albert Roux?", R.drawable.michelrouxjnr, R.drawable.albert, R.drawable.michel, R.drawable.albert, 0, "chefs"));
+        questions.add(new Question(5, "Which of these chefs have the most michelin stars? (2017)", R.drawable.robuchon, R.drawable.keller, R.drawable.ducasse, R.drawable.robuchon, 0, "chefs"));
+        questions.add(new Question(6, "Which chef has two establishments in Marlow?", "Heston Blumenthal", "Natahan Outlaw", "Tom Kerridge", "Tom Kerridge", "chefs"));
+        questions.add(new Question(7, "Which legendary chef owned 3 michelin starred \"La Tante Claire\"?", "Marco Pierre White", "Pierre Koffman", "Nico Ladenis", "Pierre Koffman", "chefs"));
+        questions.add(new Question(8, "Which of these restaurants is NOT owned by Heston Blumenthal?", "The Crowne", "The Owls Head", "The Perfectionists Cafe", "The Owls Head", "chefs"));
+        questions.add(new Question(9, "Which of these chefs doesn't have a restaurant in Manchester?", R.drawable.clifford, R.drawable.byrne, R.drawable.reid, R.drawable.clifford, 0, "chefs"));
+        questions.add(new Question(10, "Which chef owns \"64 degrees\"?", "Tommy Banks", "Michael Bremner", "Simon Hulstone", "Simon Hulstone", "chefs"));
 
 
         questionList = questions;
@@ -146,7 +153,10 @@ public class ChefsActivity extends AppCompatActivity {
 
 
         mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         setQuestionView();
+
+
     }
 
 
@@ -411,6 +421,14 @@ public class ChefsActivity extends AppCompatActivity {
                 soundOff = 0;
             }
         }
+        if (id == android.R.id.home) {
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            SharedPreferences.Editor editor = sharedPref.edit();
+            String loggedIn = "true";
+            editor.putString("loggedIn", loggedIn);
+            editor.commit();
+            releaseMediaPlayer();
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -445,19 +463,23 @@ public class ChefsActivity extends AppCompatActivity {
         }
     }
 
+
     @Override
     public void onPause() {
         super.onPause();  // Always call the superclass method first
-        String timeLeftString = Timer_TV.getText().toString();
-        String[] separated = timeLeftString.split(":");
-        separated[1] = separated[1].trim();
-        timeLeft = Integer.parseInt(separated[1]);
-        timer.cancel();
-        timer = null;
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putInt("timeLeftSave", timeLeft);
-        editor.commit();
+        if (timeOn == 1) {
+            String timeLeftString = Timer_TV.getText().toString();
+            String[] separated = timeLeftString.split(":");
+            separated[1] = separated[1].trim();
+            timeLeft = Integer.parseInt(separated[1]);
+            timer.cancel();
+            timer = null;
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putInt("timeLeftSave", timeLeft);
+            editor.commit();
+        }
+        releaseMediaPlayer();
 
 
     }
@@ -469,6 +491,35 @@ public class ChefsActivity extends AppCompatActivity {
         // SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         timeLeft = sharedPref.getInt("timeLeftSave", timeLeft);
         updateTimer(timeLeft);
+        Bundle b = getIntent().getExtras();
+        int gameMode = b.getInt("gameMode");
+        updateGameMode(gameMode);
+
+    }
+
+    private void updateGameMode(int gameMode) {
+
+        if (gameMode == 1) {
+            timeOn = 1;
+            lives = -1;
+            Lives1_TV.setVisibility(GONE);
+            Lives2_TV.setVisibility(GONE);
+            Lives3_TV.setVisibility(GONE);
+        } else if (gameMode == 2) {
+            timeOn = 0;
+            timer.cancel();
+            timer = null;
+        } else if (gameMode == 4) {
+            timeOn = 0;
+            lives = -1;
+            Lives1_TV.setVisibility(GONE);
+            Lives2_TV.setVisibility(GONE);
+            Lives3_TV.setVisibility(GONE);
+            timer.cancel();
+            timer = null;
+        } else {
+            timeOn = 1;
+        }
     }
 
     private void updateTimer(int timeLeft) {
@@ -491,7 +542,7 @@ public class ChefsActivity extends AppCompatActivity {
                     finish();
                 }
             }.start();
-        } else {
+        } else if (timeLeft != 0) {
             timer = new CountDownTimer(timeLeft * 1000 + 1000, 1000) {
 
                 public void onTick(long millisUntilFinished) {
@@ -513,6 +564,11 @@ public class ChefsActivity extends AppCompatActivity {
 
         }
     }
+
+
+
+
 }
+
 
 

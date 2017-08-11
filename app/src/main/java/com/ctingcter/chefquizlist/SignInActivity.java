@@ -149,9 +149,10 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
             GoogleSignInAccount acct = result.getSignInAccount();
             Intent intent = new Intent(SignInActivity.this, GameModeActivity.class);
             Bundle b = new Bundle();
-            String name = acct.getDisplayName();
-            b.putString("name", name); //Your score
-            intent.putExtras(b); //Put your score to your next Intent
+            String loggedIn = "true";
+            b.putString("loggedIn", loggedIn);
+            intent.putExtras(b);
+
 
             startActivity(intent);
             finish();

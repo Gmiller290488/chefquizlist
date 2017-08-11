@@ -26,6 +26,7 @@ public class QuizCategoryActivity extends AppCompatActivity {
     private String mUserEmail;
     private String mName;
     private String categoryChoice;
+    String loggedIn = "false";
     int gameMode;
 
 
@@ -44,11 +45,27 @@ public class QuizCategoryActivity extends AppCompatActivity {
         nations_TV.setOnClickListener(categoryListener);
         foods_TV.setOnClickListener(categoryListener);
 
-        Bundle b = getIntent().getExtras();
-        gameMode= b.getInt("gameMode");
+        Bundle a = getIntent().getExtras();
+        gameMode = a.getInt("gameMode");
+        Bundle c = getIntent().getExtras();
+        gameMode = c.getInt("gameMode");
+        Bundle d = getIntent().getExtras();
+        gameMode = d.getInt("gameMode");
+        Bundle e = getIntent().getExtras();
+        gameMode = e.getInt("gameMode");
 
+        try {
+            mFirebaseAuth = FirebaseAuth.getInstance();
+            mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+            Bundle b = getIntent().getExtras();
+            loggedIn = b.getString("loggedIn");
+        } catch (Exception h) {
+            if (mFirebaseUser == null && loggedIn.equals("false")) {
+                loadLogInView();
+            }
+        }
+    }
 
-}
 
     private View.OnClickListener categoryListener = new View.OnClickListener() {
         @Override
@@ -57,21 +74,30 @@ public class QuizCategoryActivity extends AppCompatActivity {
                 case R.id.all_TV:
                     // Intent intent_all = new Intent(QuizCategoryActivity.this, MainActivity.class);
                     Intent intent_all = new Intent(QuizCategoryActivity.this, MainActivity.class);
-                    Bundle b = new Bundle();
-                    b.putInt("gameMode", gameMode); //Your score
-                    intent_all.putExtras(b); //Put your score to your next Intent
+                    Bundle a = new Bundle();
+                    a.putInt("gameMode", gameMode); //Your score
+                    intent_all.putExtras(a); //Put your score to your next Intent
                     startActivity(intent_all);
                     break;
                 case R.id.chefs_TV:
                     Intent intent_chefs = new Intent(QuizCategoryActivity.this, ChefsActivity.class);
+                    Bundle c = new Bundle();
+                    c.putInt("gameMode", gameMode);
+                    intent_chefs.putExtras(c);
                     startActivity(intent_chefs);
                     break;
                 case R.id.nations_TV:
                     Intent intent_nations = new Intent(QuizCategoryActivity.this, NationsActivity.class);
+                    Bundle d = new Bundle();
+                    d.putInt("gameMode", gameMode);
+                    intent_nations.putExtras(d);
                     startActivity(intent_nations);
                     break;
                 case R.id.foods_TV:
                     Intent intent_foods = new Intent(QuizCategoryActivity.this, FoodsActivity.class);
+                    Bundle e = new Bundle();
+                    e.putInt("gameMode", gameMode);
+                    intent_foods.putExtras(e);
                     startActivity(intent_foods);
                     break;
             }

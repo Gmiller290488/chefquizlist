@@ -32,6 +32,7 @@ import static android.view.View.GONE;
 
 public class NationsActivity extends AppCompatActivity {
     List<Question> questionList;
+    int timeOn = 0;
     float score;
     int qId;
     int questionsCount;
@@ -45,6 +46,7 @@ public class NationsActivity extends AppCompatActivity {
     LinearLayout textQuestion, imageQuestion, innerContainer, LivesContainer;
     FirebaseAuth mFirebaseAuth;
     CountDownTimer timer;
+
 
     /**
      * Handles playback of all the sound files
@@ -105,6 +107,7 @@ public class NationsActivity extends AppCompatActivity {
         // Create and setup the {@link AudioManager} to request audio focus
         mAudioManager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
 
+
         ArrayList<Question> questions = new ArrayList<Question>();
         questions.add(new Question(1, "What country is Gordon Ramsay from?", R.drawable.eng, R.drawable.wales, R.drawable.scot, R.drawable.scot, 0, "nations"));
 
@@ -139,6 +142,8 @@ public class NationsActivity extends AppCompatActivity {
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         setQuestionView();
+
+
     }
 
 
@@ -403,7 +408,14 @@ public class NationsActivity extends AppCompatActivity {
                 soundOff = 0;
             }
         }
-
+        if (id == android.R.id.home) {
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            SharedPreferences.Editor editor = sharedPref.edit();
+            String loggedIn = "true";
+            editor.putString("loggedIn", loggedIn);
+            editor.commit();
+            releaseMediaPlayer();
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -440,16 +452,19 @@ public class NationsActivity extends AppCompatActivity {
     @Override
     public void onPause() {
         super.onPause();  // Always call the superclass method first
-        String timeLeftString = Timer_TV.getText().toString();
-        String[] separated = timeLeftString.split(":");
-        separated[1] = separated[1].trim();
-        timeLeft = Integer.parseInt(separated[1]);
-        timer.cancel();
-        timer = null;
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putInt("timeLeftSave", timeLeft);
-        editor.commit();
+        if (timeOn == 1) {
+            String timeLeftString = Timer_TV.getText().toString();
+            String[] separated = timeLeftString.split(":");
+            separated[1] = separated[1].trim();
+            timeLeft = Integer.parseInt(separated[1]);
+            timer.cancel();
+            timer = null;
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putInt("timeLeftSave", timeLeft);
+            editor.commit();
+        }
+        releaseMediaPlayer();
 
 
     }
@@ -461,6 +476,36 @@ public class NationsActivity extends AppCompatActivity {
         // SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         timeLeft = sharedPref.getInt("timeLeftSave", timeLeft);
         updateTimer(timeLeft);
+        Bundle b = getIntent().getExtras();
+        int gameMode = b.getInt("gameMode");
+        updateGameMode(gameMode);
+
+    }
+
+    private void updateGameMode(int gameMode) {
+
+        if (gameMode == 1) {
+            timeOn = 1;
+            Toast.makeText(this, "gameMode is " + gameMode, Toast.LENGTH_SHORT).show();
+            lives = -1;
+            Lives1_TV.setVisibility(GONE);
+            Lives2_TV.setVisibility(GONE);
+            Lives3_TV.setVisibility(GONE);
+        } else if (gameMode == 2) {
+            timeOn = 0;
+            timer.cancel();
+            timer = null;
+        } else if (gameMode == 4) {
+            timeOn = 0;
+            lives = -1;
+            Lives1_TV.setVisibility(GONE);
+            Lives2_TV.setVisibility(GONE);
+            Lives3_TV.setVisibility(GONE);
+            timer.cancel();
+            timer = null;
+        } else {
+            timeOn = 1;
+        }
     }
 
     private void updateTimer(int timeLeft) {
@@ -483,7 +528,7 @@ public class NationsActivity extends AppCompatActivity {
                     finish();
                 }
             }.start();
-        } else {
+        } else if (timeLeft != 0) {
             timer = new CountDownTimer(timeLeft * 1000 + 1000, 1000) {
 
                 public void onTick(long millisUntilFinished) {

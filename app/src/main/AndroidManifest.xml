@@ -24,11 +24,11 @@
             android:name=".SignInActivity"
             android:theme="@style/AppTheme"
             android:label="@string/signin"
-            android:parentActivityName=".QuizCategoryActivity" >
+            android:parentActivityName=".GameModeActivity" >
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".NationsActivity" />
         </activity>
 
         <activity
@@ -39,7 +39,7 @@
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".NationsActivity" />
         </activity>
 
         <activity
@@ -49,19 +49,19 @@
         <!-- Parent activity meta-data to support 4.0 and lower -->
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"
-            android:value=".MainActivity" />
+            android:value=".GameModeActivity" />
     </activity>
 
         <activity
-            android:name=".MainActivity"
+            android:name=".NationsActivity"
             android:theme="@style/AppTheme"
             android:label="@string/chefsquiz"
             android:screenOrientation="portrait"
-            android:parentActivityName=".SignInActivity" >
+            android:parentActivityName=".GameModeActivity" >
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".NationsActivity" />
         </activity>
 
         <activity
@@ -69,11 +69,11 @@
             android:label="@string/chefsquiz"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
-            android:parentActivityName=".QuizCategoryActivity" >
+            android:parentActivityName=".GameModeActivity" >
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".NationsActivity" />
         </activity>
 
         <activity
@@ -81,23 +81,23 @@
             android:name="FoodsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
-            android:parentActivityName=".QuizCategoryActivity" >
+            android:parentActivityName=".GameModeActivity" >
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".NationsActivity" />
         </activity>
 
         <activity
-            android:name="NationsActivity"
+            android:name="MainActivity"
             android:screenOrientation="portrait"
             android:label="@string/chefsquiz"
             android:theme="@style/AppTheme"
-            android:parentActivityName=".QuizCategoryActivity" >
+            android:parentActivityName=".GameModeActivity" >
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".NationsActivity" />
         </activity>
 
         <activity
@@ -109,7 +109,7 @@
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".NationsActivity" />
         </activity>
     </application>
 
